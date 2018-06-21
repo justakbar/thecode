@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Simditor</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="favicon.ico" sizes="32x32" />
+    <link rel="icon" href="favicon.ico" sizes="64x64" />
+    <link rel="icon" href="favicon.ico" sizes="128x128" />
+
+    <link media="all" rel="stylesheet" type="text/css" href="assets/styles/app.css" />
+    <link media="all" rel="stylesheet" type="text/css" href="assets/styles/simditor.css" />
+
+    <script type="text/javascript" src="assets/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/scripts/mobilecheck.js"></script>
+    <script type="text/javascript">
+        if(mobilecheck()){
+            $('<link/>', {
+                media: 'all',
+                rel: 'stylesheet',
+                type: 'text/css',
+                href: 'assets/styles/mobile.css'
+            }).appendTo('head')
+        }
+    </script>
+</head>
+<body>
+
+<div class="wrapper">
+
+    <section id="page-demo">
+<textarea id="txt-content" data-autosave="editor-content" autofocus required></textarea>
+</section>
+
+<script type="text/javascript" src="assets/scripts/module.js"></script>
+<script type="text/javascript" src="assets/scripts/uploader.js"></script>
+<script type="text/javascript" src="assets/scripts/hotkeys.js"></script>
+<script type="text/javascript" src="assets/scripts/simditor.js"></script>
+<script type="text/javascript" src="assets/scripts/page-demo.js"></script>
+</div>
+
+
+</body>
+</html>

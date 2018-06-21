@@ -1,0 +1,582 @@
+body
+{
+	background-color: #252830;
+	height: 100%;
+	font-family: calibri;
+}
+a 
+{
+	text-decoration: none;
+}
+/* ----------------Header-----------------*/
+.con
+{
+	background-color: #252830;
+	color: #CFD2DA;
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+.zag
+{
+	background-color: #252830;
+	border: 2px solid;
+	border-bottom-color: #1A1A1A;
+	box-shadow: 0px 3px 5px #1A1A1A;
+	position: fixed;
+	width: 100%;
+}
+.logo
+{
+	height: 30px;
+	width: 30px;
+}
+.search
+{
+	width: 280px;
+	margin-right: 200px;
+	float: right;
+}
+.searchbar
+{
+	width: 250px;	
+	height: 30px;
+	border-bottom-left-radius: 3px;
+	border-top-left-radius: 3px;
+	border: 0px;
+	color: #333;
+	background-color: white;
+	font-family: calibri;
+	padding: 8px;
+	outline: none;
+}
+#search button
+{
+	border: 0px;
+	color: #333;
+	position: absolute;
+	height: 30px;
+	width: 30px;
+	border-bottom-right-radius: 3px;
+	border-top-right-radius: 3px;
+	background-color: white;
+}
+#vxod button
+{
+	width: 70px;
+	color: #333;
+	font-family: calibri;
+	border-radius: 3px;
+	height: 30px;
+	border: 0px;
+	font-weight: bold;
+	outline: none;
+}
+#proicon button
+{
+	font-family: calibri;
+	border-radius: 100%;
+}
+.drop
+{
+	float: right;
+}
+.signin
+{
+	width: 270px;
+	background-color: #343B46;
+	box-shadow: 0px 0px 5px #1A1A1A;
+	padding: 20px;
+	color: white;
+}
+.signup
+{
+	width: 270px;
+	background-color: #343B46;
+	box-shadow: 0px 0px 5px #1A1A1A;
+	padding: 20px;
+}
+.loginplace
+{
+	width: 230px;
+	border-radius: 3px;
+	border: 0px;
+	height: 30px;
+	margin-bottom:20px;
+	color: #333;
+	padding: 8px;
+	font-family: calibri;
+}
+#blockvxod button
+{
+	border: 0px;
+	height: 30px;
+	background-color: #0A5896;
+	color: white;
+	width: 80px;
+}
+#blockvxod a
+{
+	color: white;
+	font-size: 11pt;
+	font-family: calibri;
+	float: right;
+}
+#nav span > a
+{
+	color: #EBEDEF;
+	font-size: 15pt;
+}
+/* --------------------------------------------------- */
+
+
+/* ----------------------Center------------------------*/
+
+.all
+{
+	min-height: 100%;
+	bottom: 0;
+	margin: 0 auto;
+}
+.main
+{
+	padding-top: 70px;
+	color: white;
+	width: 900px;
+	margin: 0 auto;
+	min-height: 100%;
+	height: 100%;
+}
+.center
+{
+	width: 700px;
+	padding: 20px;
+	font-size: 12pt;
+	color: #EBEDEF;
+	background-color: #343B46;
+	box-shadow: 0 0 5px #1A1A1A;
+	border-radius: 2px;
+	margin-bottom: 80px;
+}
+.cntr
+{
+	width: 700px;
+	padding: 20px;
+	font-size: 12pt;
+	color: #EBEDEF;
+	background-color: #343B46;
+	box-shadow: 0 0 5px #1A1A1A;
+	border-radius: 2px;
+	margin-bottom: 80px;
+}
+.cntr input[type = "text"]
+{
+	font-family: calibri;
+	font-size: 12pt;
+	color: #333;
+	border-radius: 3px;
+	height: 30px;
+	padding-left: 10px;
+	width: 250px;
+	border: 0px;
+	outline: none;
+}
+.cntr td
+{
+	padding-left: 10px;
+	height: 35px;
+
+}
+.cntr td > a
+{
+	color: white;
+}
+.menu
+{
+	font-size: 12pt;
+	display: inline-flex;
+	list-style: none;
+	font-family: calibri;
+	margin: 0px 50px;
+}
+.menu li
+{
+	margin-left: 20px;
+}
+.menu a
+{
+	color: #BEBEBF;
+	text-decoration: none;
+}
+.menu a:hover
+{
+	color: white;
+}
+.registration
+{
+	width: 700px;
+	background-color: #343B46;
+	border-radius: 3px;
+	margin: 0  auto;
+	padding-bottom: 20px;
+	box-shadow: 0px 5px 5px #1A1A1A;
+	font-family: calibri;
+
+}
+.registration form
+{
+	width: 350px;
+	margin: 0 auto;
+	margin-top: 20px;
+}
+.registration div
+{
+	width: 700px;
+	border-bottom: 1px solid #1A1A1A;
+	color: white;
+	height: 50px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	text-align: center;
+	padding: 10px;
+}
+.regisp
+{
+	width: 173px;
+	height: 35px;
+	border: 0px;
+	border-radius: 3px;
+	margin-bottom: 15px;	
+	color: #333;
+	padding-left: 12px;
+	padding-right: 12px;
+	outline: none;
+	font-size: 12pt;
+}
+.regispl
+{
+	width: 350px;
+	height: 35px;
+	border: 0px;
+	border-radius: 3px;
+	margin-bottom: 15px;
+	color: #333;
+	padding-left: 12px;
+	padding-right: 12px;
+	outline: none;
+	font-size: 12pt;
+}
+.registration label
+{
+	font-size: 15pt;
+}
+
+.errors
+{
+	width: 650px;
+	padding: 20px;
+	color: #333;
+	font-family: calibri;
+	border: 1px solid #D3D9DE;
+	border-radius: 3px;
+	background-color: #FFEFE9;
+	margin: 20px auto; 
+}
+.text
+{
+	font-size: 13pt;
+	font-family: calibri;
+}
+.tema
+{
+	font-size: 18pt;
+	font-family: calibri;
+}
+.algolist
+{
+	color: white;
+}
+.algolist:hover
+{
+	color: white;
+}
+/*--------------------Profile--------------------*/
+
+.profilephoto
+{
+	border-radius: 3px;
+	color: white;
+	float: right;
+}
+.userinfo
+{
+	width: 60%;
+	float: right;
+}
+.userinfo label
+{
+	width: 100px;
+}
+.navtabs
+{
+	display: inline-flex;
+	list-style: none;
+	margin: 0;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	background-color: #343B46;
+}
+.navtabs > li
+{
+	width: 100px;
+	padding: 5px;
+}
+.navtabs > li > a
+{
+	color: white;
+}
+.information
+{
+	font-family: calibri;
+	width: 65%;
+}
+.information label
+{
+	width: 100px;
+}
+.passwordform p
+{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.passwordform
+{
+	width: 400px;
+	margin-top: 20px;
+}
+.passwordform input[type=password]
+{
+	font-family: calibri;
+	font-size: 12pt;
+	color: #333;
+	float: right;
+	border-radius: 3px;
+	height: 30px;
+	padding-left: 10px;
+	width: 250px;
+	border: 0px;
+	outline: none;
+}
+.passwordform input[type = "submit"]
+{
+	font-family: calibri;
+	font-size: 12pt;
+	color: #333;
+	border-radius: 3px;
+	height: 30px;
+	padding-left: 10px;
+	width: 100px;
+	border: 0px;
+	outline: none;
+}
+.codex
+{
+	width: 150px;
+	margin-left: 20px;
+	font-size: 10pt;
+	font-family: calibri;
+	line-height: 30px;
+	float: right;
+	
+}
+
+.algoview
+{
+	text-align: center;
+	width: 200px;
+	display: block;
+	display: inline-flex;
+	background-color: white;
+	margin: 10px;
+	box-shadow: 0px 0px 10px black;
+	transition: all 0.2s;
+	min-height: 
+}
+.algoview:hover
+{
+	opacity: 0.7;
+	transition: all 0.2s;
+}
+
+.algoview div
+{
+	background-color: #fff;
+	color: black;
+	font-family: calibri;
+	font-size: 14pt;
+	padding: 10px;
+	height: 80px;
+}
+.algoview img
+{
+	width: 200px;
+	height: 130px;
+}
+.tekst
+{
+	text-align: left;
+}
+.title
+{
+	font-family: calibri;
+	font-size: 15pt;
+}
+.date, .views , .likes
+{
+	font-family: calibri;
+	font-size: 9pt;
+	margin-right: 20px;
+	color: #9A9AB4;
+}
+.comment textarea
+{
+	min-height: 90px;
+	min-width: 700px;
+	max-height: 400px;
+	max-width: 700px;
+	margin-bottom: 10px;
+	border-radius: 2px;
+	border: 0px;
+	color: black;
+	padding: 10px;
+}
+.comment input
+{
+	width: 100px;
+	height: 30px;
+	background-color: #f3f3f3;
+	border-radius: 2px;
+	border: 0px;
+	font-weight: bold;
+	color: black;
+
+}
+.comments
+{
+	width: 700px;
+}
+.commentinfo
+{
+	width: 700px;
+	background-color: #808080;
+	color: white;
+	padding: 10px;
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+}
+.commentinfo span
+{
+	font-size: 9pt;
+	float: right;
+	margin-left: 10px;
+}
+.commentinfo a 
+{
+	color: white;
+}
+.comments pre
+{
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
+
+.questioninput
+{
+	width: 580px;
+	font-family: calibri;
+	font-size: 12pt;
+	color: #333;
+	border-radius: 3px;
+	height: 30px;
+	padding-left: 10px;
+	border: 0px;
+	outline: none;
+}
+.questiontext a 
+{
+	text-decoration: none;
+	color: black;
+}
+.questiontextarea
+{
+	width: 100%;
+	min-height: 200px;
+	min-width: 100%;
+	max-width: 100%;
+	border: 0px;
+	color: black;
+	padding: 10px;
+	font-family: calibri;
+}
+.toolbar
+{
+	width: 100%;
+	background-color: #F9F9FA;
+	padding: 5px;
+	border-bottom: 1px solid black;
+}
+.toolbarul
+{
+	display: inline-flex;
+	list-style: none;
+}
+
+.toolbarul li
+{
+	width: 50px;
+}
+
+.qubutton
+{
+	width: 100px;
+	height: 30px;
+	color: black;
+	font-family: calibri;
+	outline: none;
+	border: 0px;
+	margin-top: 5px;
+}
+
+.questionview
+{
+	border-top: 1px solid #F9F9FA;
+	border-bottom: 1px solid #F9F9FA;
+	min-height: 20px;
+	margin-top: 20px;
+}
+/*--------------------Bottom--------------------*/
+
+.bottom
+{
+	margin: 0 auto;
+	width: 900px;
+}
+/*.footer
+{
+	padding: 10px;
+	font-family: calibri;
+	font-size: 9pt;
+	bottom: 0;
+	position: fixed;
+	color: white;
+	width: 100%;
+	background-color: black;
+}*/
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px; /* Set the fixed height of the footer here */
+  line-height: 60px; /* Vertically center the text there */
+  background-color: #f5f5f5;
+}
