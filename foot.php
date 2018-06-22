@@ -1,15 +1,13 @@
 
-</div><!-- 
+</div>
 <div class = "footer">
-	<div class = "container">
-		&copy; 2018
-	</div>
-</div> -->
-<!-- <footer class="footer">
-      <div class="container">
-        <span class="text-muted">Place sticky footer content here.</span>
-      </div>
-    </footer> -->
+    <div class = "container padding">
+        <div class = "col-md-12">
+        	<h4>THECODE</h4>
+        	<h4><small>Да будет полезным ваши вопросы другим тоже</small></h4>
+        </div>
+    </div>
+</div>
 <script src="/resource/js/jquery.min.js"></script>
 <script src="/resource/js/bootstrap.min.js"></script>
 

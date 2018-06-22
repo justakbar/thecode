@@ -1,17 +1,21 @@
-<?php include 'head.php'; 
-	
-	if($_POST['send'])
-	{
-		echo "success";
-	}
-		
-?>	
-	<input type="button" id = 'send' value = "send">
+<?php include 'head.php'; ?>
 
-	<?php  if($_POST['send'])
-	{
-		echo "success";
-	}
-	?>
+
+<div class = "container">
+	<div class = "row">
+
+		<div class = "col-md-4">
+		</div>
+
+		<div class = "col-md-4">
+			<center><h3>Page not found!</h3></center>
+		</div>
+
+		<div class = "col-md-4">
+		</div>
+
+	</div>
+</div>
+
 
 <?php include 'foot.php'; ?>

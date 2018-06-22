@@ -115,14 +115,8 @@
     <?php include 'right.php'; ?>
   </div>
 </div>
-<div class = "footer">
-    <div class = "container">
-        &copy; 2018
-    </div>
-</div>
 
-  <script src="/resource/js/jquery.min.js"></script>
-  <script src="/resource/js/bootstrap.min.js"></script>
-</body>
-</html>
-<?php mysqli_close($dbc); ?>
+<?php 
+  include 'foot.php';
+  mysqli_close($dbc); 
+?>
