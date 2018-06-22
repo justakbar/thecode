@@ -31,8 +31,8 @@
                   $query = "SELECT * FROM `questions` WHERE `tags` LIKE '%$search%' ORDER BY `id` DESC LIMIT 0, 10";
                   $query = mysqli_query($dbc,$query);
                 }
+                $last = mysqli_num_rows($query);
                 echo $msg;
-                echo '<div class = "row">';
                 if($query)
                 {
                   while($row = mysqli_fetch_assoc($query))
@@ -48,69 +48,72 @@
                   }
 
                     echo '
-                      <div class = "col-md-10">
-                          <blockquote class="blockquote">
-                          <a href = "/question/'. $row['id'] . '" class = "questionlink">' . $row['zagqu'] . '</a>
-                        <div class = "row">
-                          <div class = "col-md-4">
-                            <p> 
-                              <h6>
-                                Asked <a class = "questionlink" href = "/user/'.  $row['login'] . '">' . $row['login'] .  '</a>
-                                  ' . $time . ' ago 
-                                </h6>
-                              </p>
-                           </div>
-                           <div class = "col-md-8">
-                            '. $metki . '
-                           </div>
+                      <div class = "row">
+                        <div class = "col-md-10">
+                            <blockquote class="blockquote">
+                              <a href = "/question/'. $row['id'] . '" class = "questionlink">' . $row['zagqu'] . '</a>
+                              <div class = "row">
+                                  <div class = "col-md-4">
+                                    <p> 
+                                        <h6>
+                                          Asked <a class = "questionlink" href = "/user/'.  $row['login'] . '">' . $row['login'] .  '</a>
+                                        ' . $time . ' ago 
+                                        </h6>
+                                      </p>
+                                  </div>
+                                  <div class = "col-md-8">
+                                  '. $metki . '
+                                  </div>
+                              </div>
+                          </blockquote>
                         </div>
-                      </blockquote>
-                    </div>
-                    <div class = "col-md-1 ans">
-                      <center>' . $row['view'] . '
-                        <h5><small>просмотров</small></h5>
-                      </center>
-                    </div>
-                    <div class = "col-md-1 ans">
-                      <center>' . $row['answers'] . '
-                        <h5><small>Ответов</small></h5>
-                      </center>
-                    </div>
-                    ';
+
+                        <div class = "col-md-1 ans">
+                          <center>' . $row['view'] . '
+                              <h5><small>просмотров</small></h5>
+                            </center>
+                        </div>
+
+                        <div class = "col-md-1 ans">
+                            <center>' . $row['answers'] . '
+                              <h5><small>Ответов</small></h5>
+                            </center>
+                        </div>
+                      </div>
+                      ';
+                    }
+                    $num = "SELECT `id` FROM `questions` ORDER BY `id` DESC LIMIT 1";
+                    $num = mysqli_query($dbc, $num);
+                    $lastid = mysqli_fetch_assoc($num);
+                    
+
+                    $last =  $lastid['id'];
+                    $pageid = $_GET['page'];
+                    $left = ($pageid  - 1 > 2) ? $pageid - 2 : 1;
+                    $right = ($last - $pageid > 2) ? $pageid + 4 : $last;
+                    
+                    if($left - 1 == $_GET['page'])
+                      $class = 'class = "actived"';
+                    else $class = '';
+
+                    if($left > 1)
+                      $span = '<span>. . . </span>';
+                    else $span = '';
+                    echo '<div class = "pagination"><a '. $class .' href="/question/?page=1"> 1</a>' . $span;
+
+                    while(++$left <= $right)
+                    {
+                      if($left - 1 != $_GET['page'])
+                        echo '<a href="/question/?page=' . $left .  '"> ' . $left .  '</a>';
+                      else echo '<a class = "actived" href="/question/?page=' . $left .  '"> ' . $left .  '</a>';
+                    }
+                    echo '</div>';
                   }
-                  $num = "SELECT `id` FROM `questions` ORDER BY `id` DESC LIMIT 1";
-                  $num = mysqli_query($dbc, $num);
-                  $lastid = mysqli_fetch_assoc($num);
-                  
-
-                  $last =  $lastid['id'];
-                  $pageid = $_GET['page'];
-                  $left = ($pageid  - 1 > 2) ? $pageid - 2 : 1;
-                  $right = ($last - $pageid > 2) ? $pageid + 4 : $last;
-                  
-                  if($left - 1 == $_GET['page'])
-                    $class = 'class = "actived"';
-                  else $class = '';
-
-                  if($left > 1)
-                    $span = '<span>. . . </span>';
-                  else $span = '';
-                  echo '<div class = "pagination"><a '. $class .' href="/question/?page=1"> 1</a>' . $span;
-
-                  while(++$left <= $right)
-                  {
-                    if($left - 1 != $_GET['page'])
-                      echo '<a href="/question/?page=' . $left .  '"> ' . $left .  '</a>';
-                    else echo '<a class = "actived" href="/question/?page=' . $left .  '"> ' . $left .  '</a>';
-                  }
-
-                  echo '</div>';
-                  }
+                  else echo "Something went wrong!";
             }
 
         ?>
         </div>
-      </div>
     </div>
     <?php include 'right.php'; ?>
   </div>

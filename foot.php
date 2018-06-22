@@ -1,4 +1,3 @@
-
 </div>
 <div class = "footer">
     <div class = "container padding">
@@ -8,7 +7,12 @@
         </div>
     </div>
 </div>
-<script src="/resource/js/jquery.min.js"></script>
+<script src="/resource/js/jquery.min.js"></script><?php if($exist) { ?>
+<script src="/resource/editor/site/assets/scripts/module.js"></script>
+<script src="/resource/editor/site/assets/scripts/uploader.js"></script>
+<script src="/resource/editor/site/assets/scripts/hotkeys.js"></script>
+<script src="/resource/editor/site/assets/scripts/simditor.js"></script>
+<script src="/resource/editor/site/assets/scripts/page-demo.js"></script><?php } ?>
 <script src="/resource/js/bootstrap.min.js"></script>
 
 </body>

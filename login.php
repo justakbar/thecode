@@ -99,7 +99,9 @@
 ?>
     <div class ="container">
       <div class="row">
-        <div class = "col-md-4 col-md-offset-4">
+        <div class = "col-md-4">
+        </div>
+        <div class = "col-md-4">
         	<?php if(!empty($msg)) echo '<div class = "alert alert-success">' . $msg . '</div>'; ?>
         	<div class="panel panel-default">
               	<div class="panel-heading">
@@ -128,6 +130,8 @@
     	      </div>
     	      <?php } ?>
     	</div>
+      <div class = "col-md-4">
+      </div>
     </div>
 </div>
 <?php include 'foot.php'; ?>

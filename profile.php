@@ -57,6 +57,7 @@
             }
             else $err[] = "Пароли не совпадают!";
         }
+        else $err[] = "";
     }
 
     $id = $_SESSION['id'];
@@ -82,7 +83,8 @@
     	<div class = "row">
 	    	<div class = "col-md-3">
 	    		<img src="/resource/img/profile-pictures1.png" class="img-thumbnail">
-	    		<a href = "/logout" class="btn btn-primary btn-block">Выход</a>
+          <br/>
+	    		<a href = "/logout" class="btn btn-primary">Выход</a>
 	    	</div>
 	        <div class = "col-md-9">
 	        	<table width="50%" height = "150px">

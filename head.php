@@ -48,73 +48,77 @@
       setcookie('hash', '', time() - 3600, '/');
     }
   }
-  
+
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-  <title>LikeTheCode</title>
-  <meta charset="utf-8">
-  <link rel="stylesheet" type="text/css" href="/resource/css/bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="/resource/css/style.css">
-  <script src="/resource/js/js.js"></script>
-  <?php 
+    <!DOCTYPE html>
+    <html lang="ru">
+
+    <head>
+        <title>LikeTheCode</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="/resource/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="/resource/css/style.css">
+        <script src="/resource/js/js.js"></script>
+        <?php 
     if($page == 'ask' || $page == 'question' && is_numeric($module))
     {
   ?>
-    <link media="all" rel="stylesheet" type="text/css" href="/resource/editor/site/assets/styles/simditor.css" />
-    <!-- <link media="all" rel="stylesheet" type="text/css" href="/resource/editor/site/assets/styles/app.css" /> -->
-    <script type="text/javascript" src="/resource/editor/site/assets/scripts/mobilecheck.js"></script>
-    <script type="text/javascript">
-        if(mobilecheck()){
-            $('<link/>', {
-                media: 'all',
-                rel: 'stylesheet',
-                type: 'text/css',
-                href: '/resource/editor/site/assets/styles/mobile.css'
-            }).appendTo('head')
-        }
-    </script>
-  <?php } ?>
-</head>
-<body>
-  <nav class="navbar navhead navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <i class = "glyphicon glyphicon-menu-hamburger" style="color: white;"></i>
-        </button>
-        <a class="navbar-brand brand" href="http://thecode.uz">The Code</a>
-      </div>
+            <link media="all" rel="stylesheet" type="text/css" href="/resource/editor/site/assets/styles/simditor.css" />
+            <!-- <link media="all" rel="stylesheet" type="text/css" href="/resource/editor/site/assets/styles/app.css" /> -->
+            <script src="/resource/editor/site/assets/scripts/mobilecheck.js"></script>
+            <script>
+                if (mobilecheck()) {
+                    $('<link/>', {
+                        media: 'all',
+                        rel: 'stylesheet',
+                        type: 'text/css',
+                        href: '/resource/editor/site/assets/styles/mobile.css'
+                    }).appendTo('head')
+                }
+            </script>
+            <?php } ?>
+    </head>
 
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-          <li><a href="/question">Вопросы</a></li>
-          <?php if(isset($_COOKIE['hash']) && isset($_COOKIE['cookie']) &&
+    <body>
+        <nav class="navbar navhead navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <i class="glyphicon glyphicon-menu-hamburger" style="color: white;"></i>
+                    </button>
+                    <a class="navbar-brand brand" href="http://thecode.uz"><img src="/resource/img/thecode.png" height="30" alt="logotip"></a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/question">Вопросы</a></li>
+                        <?php if(isset($_COOKIE['hash']) && isset($_COOKIE['cookie']) &&
                           $_COOKIE['hash'] == $_SESSION['hash'] && $_COOKIE['cookie'] == $_SESSION['code']) { ?>
-          <li><a href="/profile">Профиль</a></li>
+                            <li><a href="/profile">Профиль</a></li>
 
-        <?php } ?>
-        </ul>
-        <form action = "/search" method="get" class="navbar-form navbar-left" role="search">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search" name = "qu">
-          </div>
-        </form>
-        <?php if(!isset($_COOKIE['hash']) || !isset($_COOKIE['cookie']) ||
+                            <?php } ?>
+                    </ul>
+                    <form action="/search" method="get" class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" name="qu">
+                        </div>
+                    </form>
+                    <?php if(!isset($_COOKIE['hash']) || !isset($_COOKIE['cookie']) ||
                           $_COOKIE['hash'] != $_SESSION['hash'] || $_COOKIE['cookie'] != $_SESSION['code']) { ?>
-          <div class="nav navbar-nav navbar-right">
-            <a class = "btn btn-default margin" href="/login">Войти</a>
-            <a class = "btn btn-success margin" href="/registration">Регистрация</a>
-          </div>
-        <?php } else if(isset($_COOKIE['hash']) && isset($_COOKIE['cookie']) &&
+                        <div class="nav navbar-nav navbar-right">
+                            <a class="btn btn-default margin" href="/login">Войти</a>
+                            <a class="btn btn-success margin" href="/registration">Регистрация</a>
+                        </div>
+                        <?php } else if(isset($_COOKIE['hash']) && isset($_COOKIE['cookie']) &&
                           $_COOKIE['hash'] == $_SESSION['hash'] && $_COOKIE['cookie'] == $_SESSION['code']) { ?>
-          <div class="nav navbar-nav navbar-right">
-            <a class = "btn btn-default margin" href="/ask">Задать вопрос</a>
-          </div>
-        <?php } ?>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-  <div class = "all">
+                            <div class="nav navbar-nav navbar-right">
+                                <a class="btn btn-default margin" href="/ask">Задать вопрос</a>
+                            </div>
+                            <?php } ?>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+        <div class="all">

@@ -16,8 +16,9 @@
 			$err[] = 'Поля "основной текст" пусто!';
 		if(empty($metki))
 			$err[] = 'Добавтье не менее 1 и не более 5 метки!';
-		$part = count(explode(" ", $metki));
-		if($part >= 5 || $part <= 1)
+		/*$part = count(explode(" ", $metki));*/
+		$part = str_word_count($metki);
+		if($part >= 5 || $part < 0)
 			$err[] = 'Добавтье не менее 1 и не более 5 метки!';
 		
 		if(count($err) == 0)
@@ -58,6 +59,7 @@
 	    	<div class="col-md-9">
 	      		<div class = "main">
 	      			<?php 
+	      				echo $part;
 	      				if(count($err) > 0)
 	      				{
 	      					echo "<h4>Исправьте!</h4>";

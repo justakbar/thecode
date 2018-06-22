@@ -12,9 +12,9 @@
 			$times = time();
 
 			$query = "INSERT INTO `answer` (answer, qu_id, login, dates) VALUES ('$text', '$module', '$login', '$times')";
-	  		
+
 	  		$query = mysqli_query($dbc,$query);
-	  		
+
 	  		if($query)
 	  		{
 	  			$qu = "UPDATE `questions` SET `answers` = `answers` + 1 WHERE `id` = '$module'";
@@ -37,15 +37,23 @@
 
   	include 'head.php'; 
 ?>
-<div class ="container">
-  	<div class="row">
-    	<div class="col-md-9">
-      		<div class = "main">
-		        <?php 
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+            	<div class = "main">
+                    <?php 
 		        	if($page == 'question' && !isset($module))
 		        	{
 		        		echo $msg;
-		        		$msg = '<h3>Последние вопросы</h3><hr/>';
+		        		$msg = '<div class = "row">
+		        					<div class = "col-md-4">
+		        						<h3>Последние вопросы</h3>
+		        					</div>
+		        					<div class = "col-md-8">
+		        						<a href= "/question/?cat=noans"><h4>Неотвеченные вопросы</h4></a>
+		        					</div>
+		        				</div>
+		        				<hr/>';
 
 		        		if(isset($_GET['page']))
 		        		{
@@ -66,54 +74,55 @@
 		        		}
 		        		$last = mysqli_num_rows($query);
 				   		echo $msg;
-				   		echo '<div class = "row">';
 				   		if($query)
 					   	{
 					   		while($row = mysqli_fetch_assoc($query))
-					    	{
+							{
 								$since = $row['dates'];
 								$since = time() - $since;
-								$time = time_since($since);	
+								$time = time_since($since); 
 
 								$tags = explode(" ", $row['tags']);
 								$metki = '';
 								foreach ($tags as $tag) {
-									$metki .= '<a class = "badge" href = "/question/?id='. urlencode($tag) . '">'. htmlentities($tag) . '</a> ';
+								$metki .= '<a class = "badge" href = "/question/?id='. urlencode($tag) . '">'. htmlentities($tag) . '</a> ';
 								}
 
-					    		echo '
-					    		<div class ="row"> 
-					    			<div class = "col-md-10">
-					        			<blockquote class="blockquote">
-										  	<a href = "/question/'. $row['id'] . '" class = "questionlink">' . $row['zagqu'] . '</a>
-											<div class = "row">
-												<div class = "col-md-4">
-													<p> 
-														<h6>
-															Asked <a class = "questionlink" href = "/user/'.	$row['login'] . '">' . $row['login'] .  '</a>
-													  		' . $time . ' ago 
-												  		</h6>
-												  	</p>
-												 </div>
-												 <div class = "col-md-8">
-												 	'. $metki . '
-												 </div>
-											</div>
+								echo '
+								<div class = "row">
+									<div class = "col-md-10">
+									    <blockquote class="blockquote">
+										    <a href = "/question/'. $row['id'] . '" class = "questionlink">' . $row['zagqu'] . '</a>
+										    <div class = "row">
+										      	<div class = "col-md-4">
+										        	<p> 
+										          		<h6>
+										            		Asked <a class = "questionlink" href = "/user/'.  $row['login'] . '">' . $row['login'] .  '</a>
+										              ' . $time . ' ago 
+										            	</h6>
+										          	</p>
+										       	</div>
+										       	<div class = "col-md-8">
+										        '. $metki . '
+										       	</div>
+										    </div>
 										</blockquote>
 									</div>
+
 									<div class = "col-md-1 ans">
-										<center>' . $row['view'] . '
-											<h5><small>просмотров</small></h5>
-										</center>
+									 	<center>' . $row['view'] . '
+									    	<h5><small>просмотров</small></h5>
+									  	</center>
 									</div>
+
 									<div class = "col-md-1 ans">
-										<center>' . $row['answers'] . '
-											<h5><small>Ответов</small></h5>
-										</center>
+									  	<center>' . $row['answers'] . '
+									    	<h5><small>Ответов</small></h5>
+									  	</center>
 									</div>
 								</div>
-									';
-				    		}
+								';
+							}
 				    		if(!isset($_GET['id']))
 				    		{
 				    			$num = "SELECT `id` FROM `questions` ORDER BY `id` DESC LIMIT 1";
@@ -142,9 +151,7 @@
 									echo '<a href="/question/?page=' . $left .  '"> ' . $left .  '</a>';
 								else echo '<a class = "actived" href="/question/?page=' . $left .  '"> ' . $left .  '</a>';
 							}
-
 							echo '</div>';
-				    	
 				    	}
 				    	else echo "Something went wrong!";
 			    	}
@@ -189,7 +196,8 @@
 									$metki .= '<a class = "badge" href = "/question/?id='. urlencode($tag) . '">'. htmlspecialchars($tag) . '</a> ';
 								}
 					    		$view = ($view > 1) ? 'viewed: ' .$view .  ' times' : 'viewed: ' .$view .  ' time';
-					    		echo '<div class = "row">
+					    		echo '
+					    			<div class = "row">
 					    				<div class = "col-md-9">
 					    					<h3>'. $row['zagqu'] . '</h3>
 					    				</div>
@@ -197,20 +205,24 @@
 					    					<h4>
 					    						<small>' . $view . '</small><br/>
 					    						<small> Asked: '  . time_since(time() - $row['dates']) .  ' ago</small><br/>
-					    						<small> User: <a class = "questionlink" href = "/user/' . $row['login'] . '">' . $row['login'] . '</a>
+					    						<small> User: <a class = "questionlink" href = "/user/' . $row['login'] . '">' . $row['login'] . '</a></small>
 					    					</h4> 
 					    				</div>
 					    			</div>
-					    			<hr/>';
-					    		echo '<h4>Question</h4>';
-					    		echo 
-					    		'<div class = "question">' .
-					    			htmlspecialchars_decode($row['question']) . 
-					    		'</div><div class = "row">
-					    			<div class = "col-md-12" align = "right">
-					    				Метки: ' . $metki .  ' 
-					    			</div>
-					    		</div>';
+					    			<hr/>
+					    			<div class = "row">
+					    				<div class = "col-md-12">
+					    					<h4>Question</h4>
+					    					<div class = "question">' .
+					    						htmlspecialchars_decode($row['question']) . 
+					    					'</div>
+						    				<div class = "row">
+						    					<div class = "col-md-12" align = "right">
+						    						Метки: ' . $metki .  ' 
+						    					</div>
+						    				</div>
+						    			</div>
+					    			</div>';
 
 					    		$query = "SELECT * FROM `answer` WHERE `qu_id` = '$module' ORDER BY `id` DESC";
 					    		$query = mysqli_query($dbc,$query);
@@ -227,54 +239,37 @@
 
 										echo '
 										<blockquote>
-										<div class = "row">
-											<div class = "col-md-2">
-												<span style = "font-size: 11pt;">Ответил(а)</span>
-												<a class = "questionlink" href = "/user/' . $row['login'] . '">'. $row['login']  . '</a><br/>
-												<small> ' . $time . ' ago </small>
+											<div class = "row">
+												<div class = "col-md-2">
+													<span style = "font-size: 11pt;">Ответил(а)</span>
+													<a class = "questionlink" href = "/user/' . $row['login'] . '">'. $row['login']  . '</a><br/>
+													<small> ' . $time . ' ago </small>
+												</div>
+												<div class = "col-md-10"> ' . 
+													htmlspecialchars_decode($row['answer']) .
+												'</div>
 											</div>
-											<div class = "col-md-10"> ' . 
-												htmlspecialchars_decode($row['answer']) .
-											'</div>
-										</div>
 										</blockquote>
 										<hr/>';
 						    		}
 					    		}
 					    		$exist = true;
 				    	?>
-				    	<h3>Ответить</h3>
-				    	<form action = "/question/<?php echo $module; ?>" method="post">
-				    		<section id="page-demo">
-				           	   	<textarea id="txt-content" name = "questiontext" data-autosave="editor-content" required></textarea>
-				            </section>
-				            <input type="submit" name="send" value = "Отправить" class = "btn btn-default margin">
-
-				        </form>
-				    	<?php 
+                        <h3>Ответить</h3>
+                        <form action="/question/<?php echo $module; ?>" method="post">
+                            <section id="page-demo">
+                                <textarea id="txt-content" name="questiontext" data-autosave="editor-content" required></textarea>
+                            </section>
+                            <input type="submit" name="send" value="Отправить" class="btn btn-default margin">
+                        </form>
+                        <?php 
 				    		}
 				    		else { echo '<h4> Question not exist!</h4>'; $exist = false; }
 				    	}
 			    	} ?>
-    		</div>
-    	</div>
+			    </div>
+            </div>
+            <?php include 'right.php'; ?>
+        </div>
     </div>
-    <?php include 'right.php'; ?>
-</div>
-<div class = "footer">
-    <div class = "container">
-      	&copy; 2018
-    </div>
-</div>
-</div>
-	<script src="/resource/js/jquery.min.js"></script>
-    <?php if($exist) { ?>
-	    <script type="text/javascript" src="/resource/editor/site/assets/scripts/module.js"></script>
-	    <script type="text/javascript" src="/resource/editor/site/assets/scripts/uploader.js"></script>
-	    <script type="text/javascript" src="/resource/editor/site/assets/scripts/hotkeys.js"></script>
-	    <script type="text/javascript" src="/resource/editor/site/assets/scripts/simditor.js"></script>
-	    <script type="text/javascript" src="/resource/editor/site/assets/scripts/page-demo.js"></script>
-	<?php } ?>
-    <script src="/resource/js/bootstrap.min.js"></script>
-</body>
-</html>
+<?php include 'foot.php'; ?>

@@ -14,9 +14,10 @@ body
 	border-radius: 0px;
 	font-family: calibri;
 }
-.brand:hover
+.brand img
 {
-	color: white;
+	margin: 5px 5px;
+	padding: 5px;
 }
 .margin
 {
@@ -54,7 +55,7 @@ body
 {
 	margin-top: 70px;
 	min-height: 100%;
-	margin-bottom: 70px;
+	margin-bottom: 150px;
 }
 #proicon button
 {
