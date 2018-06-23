@@ -47,8 +47,8 @@
 	  		else $err[] = 'Something went wrong!';
 	  	}
 	}
-	/*$i = 38;
-	while(++$i < 70){
+	/*$i = 49;
+	while(++$i < 100){
 		$query = "INSERT INTO `questions` (zagqu, question, tags, answers, email, login, dates, views, viewed, view) VALUES ('$i', '$i', 'nothing', '0', 'akbar@gmail.com', 'akbar', 'time()', '', '', '0')";
 		$query = mysqli_query($dbc,$query);
 	}*/

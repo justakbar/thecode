@@ -9,7 +9,7 @@
 		{
 			$text = htmlentities( $_POST['questiontext'], ENT_QUOTES);
 			$login = $_SESSION['username'];
-			$times = time();
+			$times = time(); 
 
 			$query = "INSERT INTO `answer` (answer, qu_id, login, dates) VALUES ('$text', '$module', '$login', '$times')";
 
@@ -45,35 +45,60 @@
 		        	if($page == 'question' && !isset($module))
 		        	{
 		        		echo $msg;
-		        		$msg = '<div class = "row">
-		        					<div class = "col-md-4">
-		        						<h3>Последние вопросы</h3>
-		        					</div>
-		        					<div class = "col-md-8">
-		        						<a href= "/question/?cat=noans"><h4>Неотвеченные вопросы</h4></a>
-		        					</div>
-		        				</div>
-		        				<hr/>';
 
-		        		if(isset($_GET['page']))
+		        		$_GET['page']--;
+		        		if(isset($_GET['page']) && !isset($_GET['cat']) && $_GET['cat'] != 'noans')
 		        		{
-		        			$_GET['page']--;
 		        			$page = $_GET['page'] * 10;
+		        			$query = "SELECT * FROM `questions` ORDER BY `id` DESC LIMIT $page, 10";
+  							$query = mysqli_query($dbc, $query);
+		        			$addr = '?page=';
+		        			$title = 'Вопросы';
 		        		}
-		        		else $page = 0;
+		        		else if($_GET['cat'] == 'noans')
+  						{
+  							$title = '<h3>Неотвеченные</h3>';
+			        		$addr = '?cat=noans&page=';
 
-		        		$query = "SELECT * FROM `questions` WHERE `id` ORDER BY `id` DESC LIMIT $page, 10";
-  						$query = mysqli_query($dbc, $query);
+			        		$page = isset($_GET['page']) ? ($_GET['page']) * 10 : 0;
+
+			        		$query = "SELECT * FROM `questions` WHERE `answers` = 0 ORDER BY `id` LIMIT $page, 10";
+  							$query = mysqli_query($dbc, $query);
+  						}
+  						else {
+  							$page = 0;
+  							$query = "SELECT * FROM `questions` ORDER BY `id` DESC LIMIT $page, 10";
+  							$query = mysqli_query($dbc, $query);
+  							$addr = '?page=';
+  							$title = 'Последние вопросы';
+  						}
 
 			        	if(isset($_GET['id']))
 		        		{
 		        			$search = $_GET['id'];
 		        			$msg = '<h3>' . $search . '</h3><hr/>';
-		        			$query = "SELECT * FROM `questions` WHERE `tags` LIKE '%$search%' ORDER BY `id` DESC LIMIT 0, 10";
-		        			$query = mysqli_query($dbc,$query);
+
+		        			if(isset($_GET['page']))
+			        		{
+			        			$_GET['page']--;
+			        			$page = $_GET['page'] * 10;
+			        		}
+			        		else $page = 0;
+
+			        		$query = "SELECT * FROM `questions` WHERE `tags` LIKE '%$search%' ORDER BY `id` DESC LIMIT $page, 10";
+  							$query = mysqli_query($dbc, $query);
 		        		}
+
 		        		$last = mysqli_num_rows($query);
-				   		echo $msg;
+				   		echo '	<div class = "row">
+		        					<div class = "col-md-8">
+		        						<h3>' . $title .  '</h3>
+		        					</div>
+		        					<div class = "col-md-4">
+		        						<a class = "btn btn-primary" href= "/question/?cat=noans">Неотвеченные</a>
+		        					</div>
+		        				</div>
+		        				<hr/>';	
 				   		if($query)
 					   	{
 					   		while($row = mysqli_fetch_assoc($query))
@@ -143,13 +168,13 @@
 							if($left > 1)
 								$span = '<span>. . . </span>';
 							else $span = '';
-							echo '<div class = "pagination"><a '. $class .' href="/question/?page=1"> 1</a>' . $span;
+							echo '<div class = "pagination"><a '. $class .' href="/question/' . $addr . '1"> 1 </a>' . $span;
 
 							while(++$left <= $right)
 							{
 								if($left - 1 != $_GET['page'])
-									echo '<a href="/question/?page=' . $left .  '"> ' . $left .  '</a>';
-								else echo '<a class = "actived" href="/question/?page=' . $left .  '"> ' . $left .  '</a>';
+									echo '<a href="/question/'. $addr . $left .  '"> ' . $left .  '</a>';
+								else echo '<a class = "actived" href="/question/' . $addr . ''. $left .  '"> ' . $left .  '</a>';
 							}
 							echo '</div>';
 				    	}
