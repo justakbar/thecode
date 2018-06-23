@@ -1,6 +1,9 @@
 <?php 
 	session_start();
 	$dbc = mysqli_connect('localhost','algorithms','nexttome', 'algoritm'); 
+	if (!$dbc) {
+          die("Connection failed: " . mysqli_connect_error());
+      }
   	if($_POST['send'])
 	{
 		$zagqu = htmlentities($_POST['zagqu'],ENT_QUOTES);

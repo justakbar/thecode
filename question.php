@@ -65,6 +65,16 @@
 			        		$query = "SELECT * FROM `questions` WHERE `answers` = 0 ORDER BY `id` LIMIT $page, 10";
   							$query = mysqli_query($dbc, $query);
   						}
+  						else if(isset($_GET['id']))
+		        		{
+		        			$search = $_GET['id'];
+		        			$title = '<h3>' . $search . '</h3>';
+		        			$addr = '?id='.$search.'&page=';
+		        			$msg = '<h3>' . $search . '</h3><hr/>';
+		        			$page = isset($_GET['page']) ? $_GET['page'] * 10 : 0;
+			        		$query = "SELECT * FROM `questions` WHERE `tags` LIKE '%$search%' ORDER BY `id` DESC LIMIT $page, 10";
+  							$query = mysqli_query($dbc, $query);
+		        		}
   						else {
   							$page = 0;
   							$query = "SELECT * FROM `questions` ORDER BY `id` DESC LIMIT $page, 10";
@@ -72,22 +82,6 @@
   							$addr = '?page=';
   							$title = 'Последние вопросы';
   						}
-
-			        	if(isset($_GET['id']))
-		        		{
-		        			$search = $_GET['id'];
-		        			$msg = '<h3>' . $search . '</h3><hr/>';
-
-		        			if(isset($_GET['page']))
-			        		{
-			        			$_GET['page']--;
-			        			$page = $_GET['page'] * 10;
-			        		}
-			        		else $page = 0;
-
-			        		$query = "SELECT * FROM `questions` WHERE `tags` LIKE '%$search%' ORDER BY `id` DESC LIMIT $page, 10";
-  							$query = mysqli_query($dbc, $query);
-		        		}
 
 		        		$last = mysqli_num_rows($query);
 				   		echo '	<div class = "row">

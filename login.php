@@ -5,8 +5,7 @@
     $err = array();
     $msg = "";
 
-    if(isset($_COOKIE['hash']) && isset($_COOKIE['cookie']) &&
-                          $_COOKIE['hash'] == $_SESSION['hash'] && $_COOKIE['cookie'] == $_SESSION['code'])
+    if(isset($_COOKIE['hash']) && isset($_COOKIE['cookie']) && $_COOKIE['hash'] == $_SESSION['hash'] && $_COOKIE['cookie'] == $_SESSION['code'])
       header("Location: http://thecode.uz");
     else
     {

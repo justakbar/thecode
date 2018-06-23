@@ -65,17 +65,24 @@
     $surname = $_SESSION['surname'];
     $login = $_SESSION['username'];
     $email = $_SESSION['email'];
-    $ask = $_SESSION['ask'];
-    $answer = $_SESSION['answer'];
+    $hash = $_SESSION['hash'];
+    $query = mysqli_query($dbc, "SELECT `ask`, `answer` FROM `users` WHERE `hash` = '$hash'");
 
-    $ask = explode(" ", $ask);
-  	array_pop($ask);
-  	$soraw = $ask;
-  	$ask = count($ask);
+    if($query)
+    {
+      $row = mysqli_fetch_assoc($query);
+      $ask = $row['ask'];
+      $answer = $row['answer'];
+      $ask = explode(" ", $ask);
+      array_pop($ask);
+      $soraw = $ask;
+      $ask = count($ask);
 
-  	$answer = explode(" ", $answer);
-  	array_pop($answer);
-  	$answer = count($answer);
+      $answer = explode(" ", $answer);
+      array_pop($answer);
+      $answer = count($answer);
+    }
+    else $soraw = array(0);
 ?>
 <div class ="container">
   <div class="row">

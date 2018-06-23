@@ -3,8 +3,6 @@
   {
     if($_COOKIE['hash'] != $_SESSION['hash'] || $_COOKIE['cookie'] != $_SESSION['code'])
     {
-      $dbc = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
-
       $hash = $_COOKIE['hash'];
       $code = $_COOKIE['cookie'];
 
@@ -54,7 +52,7 @@
     <html lang="ru">
 
     <head>
-        <title>LikeTheCode</title>
+        <title>TheCode</title>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="/resource/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/resource/css/style.css">
