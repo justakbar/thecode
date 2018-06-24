@@ -19,24 +19,28 @@
 			$query = mysqli_query($dbc, $query);
 			if($query)
 			{
+				$i = 0;
 				while($row = mysqli_fetch_assoc($query))
 				{
+					if($i == 5) break;
+					
 					if($row['id'] != $module)
 					{
 						$tg = explode(" ", $row['tags']);
 						$met = '';
 						foreach ($tg as $tag) {
-							$met .= '<a class = "badge" href = "/question/?id='. urlencode($tag) . '">'. htmlentities($tag) . '</a> ';
+							$met .= '<a class = "badge badge-light" href = "/question/?id='. urlencode($tag) . '">'. htmlentities($tag) . '</a> ';
 						}
 						echo '
 							<div class = "row">
 								<div class = "col-md-12">
-									<h4><a class = "questionlink" href = "/question/'. $row['id'] .'">' . $row['zagqu'] . '</a></h4>
+									<h6><a class = "questionlink" href = "/question/'. $row['id'] .'">' . $row['zagqu'] . '</a></h6>
 								' . $met .  '
 								</div> 
 							</div>
 						';
 					}
+					$i++;
 				}
 			}
 			else echo "Что то пошло не так!";
@@ -53,8 +57,8 @@
 				  <div class = "row">
 					<div class = "col-md-12">
 						<p>
-							<code><a style = "text-decoration: none;" href = "/question/?id='.urlencode($key).'"><code>'.$key. 
-							'</code> </a></code> 
+							<a class = "badge badge-light" href = "/question/?id='.urlencode($key).'">'.$key. 
+							'</a> 
 							<span> x ' . $value . '</span>
 						</p>
 					</div>

@@ -14,87 +14,74 @@
         <?php 
               if($page == 'index')
               {
-                echo $msg;
-                $msg = '<h3>Последние вопросы</h3><hr/>';
-
-                if(isset($_GET['page']))
-                {
-                  $_GET['page']--;
-                  $page = $_GET['page'] * 10;
-                }
-                else $page = 0;
-
-                $query = "SELECT * FROM `questions` WHERE `id` ORDER BY `id` DESC LIMIT $page, 10";
+                $title = 'Последние вопросы';
+                $page = 0;
+                $query = "SELECT * FROM `questions` ORDER BY `id` DESC LIMIT $page, 10";
                 $query = mysqli_query($dbc, $query);
+                $addr = '?page=';
 
-                if(isset($_GET['id']))
-                {
-                  $search = $_GET['id'];
-                  $msg = '<h3>' . $search . '</h3><hr/>';
-                  $query = "SELECT * FROM `questions` WHERE `tags` LIKE '%$search%' ORDER BY `id` DESC LIMIT 0, 10";
-                  $query = mysqli_query($dbc,$query);
-                }
-                $last = mysqli_num_rows($query);
-                echo $msg;
+                echo '  <div class = "row">
+                      <div class = "col-md-8">
+                        <h3>' . $title .  '</h3>
+                      </div>
+                      <div class = "col-md-4">
+                        <a class = "btn btn-primary" href= "/question/?cat=noans">Неотвеченные</a>
+                      </div>
+                    </div>
+                    <hr/>';
+
+
                 if($query)
                 {
                   while($row = mysqli_fetch_assoc($query))
                   {
-                  $since = $row['dates'];
-                  $since = time() - $since;
-                  $time = time_since($since); 
+                    $since = $row['dates'];
+                    $since = time() - $since;
+                    $time = time_since($since); 
 
-                  $tags = explode(" ", $row['tags']);
-                  $metki = '';
-                  foreach ($tags as $tag) {
-                    $metki .= '<a class = "badge" href = "/question/?id='. urlencode($tag) . '">'. htmlentities($tag) . '</a> ';
-                  }
-
-                    echo '
-                      <div class = "row">
-                        <div class = "col-md-10">
-                            <blockquote class="blockquote">
-                              <a href = "/question/'. $row['id'] . '" class = "questionlink">' . $row['zagqu'] . '</a>
-                              <div class = "row">
-                                  <div class = "col-md-4">
-                                    <p> 
-                                        <h6>
-                                          Asked <a class = "questionlink" href = "/user/'.  $row['login'] . '">' . $row['login'] .  '</a>
-                                        ' . $time . ' ago 
-                                        </h6>
-                                      </p>
-                                  </div>
-                                  <div class = "col-md-8">
-                                  '. $metki . '
-                                  </div>
-                              </div>
-                          </blockquote>
-                        </div>
-
-                        <div class = "col-md-1 ans">
-                          <center>' . $row['view'] . '
-                              <h5><small>просмотров</small></h5>
-                            </center>
-                        </div>
-
-                        <div class = "col-md-1 ans">
-                            <center>' . $row['answers'] . '
-                              <h5><small>Ответов</small></h5>
-                            </center>
-                        </div>
-                      </div>
-                      ';
+                    $tags = explode(" ", $row['tags']);
+                    $metki = '';
+                    foreach ($tags as $tag) {
+                      $metki .= '<a class = "badge badge-light" href = "/question/?id='. urlencode($tag) . '">'. htmlentities($tag) . '</a> ';
                     }
-                    $num = "SELECT `id` FROM `questions` ORDER BY `id` DESC LIMIT 1";
-                    $num = mysqli_query($dbc, $num);
-                    $lastid = mysqli_fetch_assoc($num);
-                    
 
-                    $last =  $lastid['id'];
-                    $pageid = $_GET['page'];
-                    $left = ($pageid  - 1 > 2) ? $pageid - 2 : 1;
-                    $right = ($last - $pageid > 2) ? $pageid + 4 : $last;
-                    
+                      echo '
+                        <div class = "row blockquote">
+                          <div class = "col-md-8">
+                              <div class="">
+                                <a href = "/question/'. $row['id'] . '" class = "questionlink">' . $row['zagqu'] . '</a>
+                                <div class = "row">
+                                    <div class = "col-md-4">
+                                      <p> 
+                                                  <small>Asked ' . $time . ' ago </small>
+                                                </p>
+                                    </div>
+                                    <div class = "col-md-8">
+                                    '. $metki . '
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+
+                          <div class = "col-md-2 border border-white">
+                            <center><small>' . $row['view'] . '</small>
+                                <h6><small>просмотров</small></h6>
+                              </center>
+                          </div>
+
+                          <div class = "col-md-2 border border-white">
+                              <center><small>' . $row['answers'] . '</small>
+                                <h6><small>Ответов</small></h6>
+                              </center>
+                          </div>
+                        </div>
+                        ';
+                        $last = $row['id'];
+                    }
+                    $pageid = $_GET['page'] + 1;
+                    $left = ($pageid  - 2 > 2) ? $pageid - 3 : 1;
+                    $right = ($last - $pageid > 2) ? $pageid + 3 : $last;
+                        
                     if($left - 1 == $_GET['page'])
                       $class = 'class = "actived"';
                     else $class = '';

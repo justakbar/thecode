@@ -38,6 +38,8 @@
       include 'search.php';
     else if($page == 'ask')
       include 'ask.php';
+    else if($page == 'ordvac')
+      include 'ordvac.php';
     else if($page == 'user')
       include 'user.php';
     else include 'sorry.php';

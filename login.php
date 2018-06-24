@@ -46,9 +46,7 @@
                   $id = $row['user_id'];
                   $hash = md5(generateCode());
                   mysqli_query($dbc,"UPDATE users SET hash = '$hash' WHERE user_id = '$id'");
-
-                  $_SESSION['ask'] = $row['ask'];
-                  $_SESSION['answer'] = $row['answer'];
+                  
                   $_SESSION['id'] = $row['user_id'];
                   $_SESSION['name'] = $row['first_name'];
                   $_SESSION['surname'] = $row['last_name'];
@@ -96,41 +94,38 @@
     } 
     include 'head.php';
 ?>
-    <div class ="container">
-      <div class="row">
-        <div class = "col-md-4">
+<div class ="container">
+  <div class="row">
+    <div class = "col-md-6 offset-md-3">
+      <?php if(!empty($msg)) echo '<div class = "alert alert-success">' . $msg . '</div>'; ?>
+      <div class="card text-center mx-auto">
+        <div class="card-header">
+          <center><strong>Вход</strong></center>
         </div>
-        <div class = "col-md-4">
-        	<?php if(!empty($msg)) echo '<div class = "alert alert-success">' . $msg . '</div>'; ?>
-        	<div class="panel panel-default">
-              	<div class="panel-heading">
-              		<center><strong>Вход</strong></center>
-              	</div>
-              	<div class = "panel-body">
-    		    	<form action = "/login" method="post">
-    		    			
-    		    		<p><input type="text" class="form-control loginplace" name = "usrname" placeholder="Имя пользователя"></p>
-    		    		<p><input type="password" class="form-control loginplace" name = "paswrd" placeholder="Пароль"></p>
-    	    			<button type="sumbit" name="send" class = "btn btn-primary btn-sm">Вход</button>
-    	    			<a href = "/registration" name="send" class = "btn btn-success btn-sm">Регистрация</a>
+        <div class = "card-body">
+          <form action = "/login" method="post">
 
-    		    	</form>
-    	    	</div>
-    	    </div>
-    	    <?php
-            if(count($err) > 0) {
-    	      ?>
-    	      <div class = "errors">
-    	        <?php 
-    	          foreach ($err as $errors) {
-    	            echo '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"> </i> '.$errors.'</div>';
-    	          }
-    	        ?>
-    	      </div>
-    	      <?php } ?>
-    	</div>
-      <div class = "col-md-4">
+            <p><input type="text" class="form-control loginplace" name = "usrname" placeholder="Имя пользователя"></p>
+            <p><input type="password" class="form-control loginplace" name = "paswrd" placeholder="Пароль"></p>
+            <div class = "float-left">
+              <button type="sumbit" name="send" class = "btn btn-primary btn-sm">Вход</button>
+              <a href = "/registration" name="send" class = "btn btn-success btn-sm">Регистрация</a>
+            </div>
+          </form>
+        </div>
       </div>
+      <?php
+        if(count($err) > 0) {
+      ?>
+      <div class = "errors">
+        <?php 
+          foreach ($err as $errors) {
+          echo '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"> </i> '.$errors.'</div>';
+        }
+        ?>
+      </div>
+      <?php } ?>
     </div>
+  </div>
 </div>
 <?php include 'foot.php'; ?>

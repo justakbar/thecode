@@ -45,12 +45,12 @@
 
 	  			$qu = "UPDATE `users` SET `ask` = '$add' WHERE `login` = '$user'";
 	  			$qu = mysqli_query($dbc,$qu);
-	  			/*header("Location: /question");*/
+	  			header("Location: /question");
 	  		}
 	  		else $err[] = 'Something went wrong!';
 	  	}
 	}
-	/*$i = 49;
+	/*$i = 0;
 	while(++$i < 100){
 		$query = "INSERT INTO `questions` (zagqu, question, tags, answers, email, login, dates, views, viewed, view) VALUES ('$i', '$i', 'nothing', '0', 'akbar@gmail.com', 'akbar', 'time()', '', '', '0')";
 		$query = mysqli_query($dbc,$query);
@@ -62,7 +62,6 @@
 	    	<div class="col-md-9">
 	      		<div class = "main">
 	      			<?php 
-	      				echo $part;
 	      				if(count($err) > 0)
 	      				{
 	      					echo "<h4>Исправьте!</h4>";
@@ -77,6 +76,9 @@
 		        			<h4>Заголовок вопроса:</h4>
 		        			<input type="text" name="zagqu" class = "form-control" placeholder="Заголовка вопрос">	
 		        		</p>
+		        		<p>
+		        			<h5>Чтобы писать код нажмите на - <code><?php echo htmlentities("</>") ?></code></h5>
+		        		</p>
 		        		<h3>Основной текст</h3>
 		        		
 		        		<section id="page-demo">
@@ -90,7 +92,7 @@
 		                </p>
 
 
-		                <input type="submit" name="send" value = "Задать" class = "btn btn-default margin">
+		                <input type="submit" name="send" value = "Задать" class = "btn btn-primary">
 
 		        	</form>
 	      		</div>
@@ -100,8 +102,11 @@
 	</div>
 </div>
 <div class = "footer">
-    <div class = "container">
-      	&copy; 2018
+    <div class = "container padding">
+        <div class = "col-md-12">
+        	<h5>TheCode</h5>
+        	<h5><small>Да будет полезным ваши вопросы другим тоже</small></h5>
+        </div>
     </div>
 </div>
 	<script src="/resource/js/jquery.min.js"></script>

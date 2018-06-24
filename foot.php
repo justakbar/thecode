@@ -2,8 +2,8 @@
 <div class = "footer">
     <div class = "container padding">
         <div class = "col-md-12">
-        	<h4>THECODE</h4>
-        	<h4><small>Да будет полезным ваши вопросы другим тоже</small></h4>
+        	<h5>TheCode</h5>
+        	<h5><small>Да будет полезным ваши вопросы другим тоже</small></h5>
         </div>
     </div>
 </div>

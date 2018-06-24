@@ -87,61 +87,50 @@
 <div class ="container">
   <div class="row">
     <div class="col-md-9">
-    	<div class = "row">
+    	<div class = "row border border-white padding rounded">
 	    	<div class = "col-md-3">
 	    		<img src="/resource/img/profile-pictures1.png" class="img-thumbnail">
           <br/>
 	    		<a href = "/logout" class="btn btn-primary">Выход</a>
 	    	</div>
-	        <div class = "col-md-9">
-	        	<table width="50%" height = "150px">
-					<caption><center><strong>Информация</strong></center></caption>
-
-					<tr>
-						<td>Имя:</td>
-						<td><?php echo $name; ?></td>
-					</tr>
-					<tr> 
-						<td>Фамилья:</td>
-						<td><?php echo $surname; ?></td>
-					</tr>
-					<tr>
-						<td>Логин:</td>
-						<td><?php echo $login; ?></td>
-					</tr>
-					<tr>
-						<td>Задал(а) вопрос:</td>
-						<td><?php echo $ask; ?></td>
-					</tr>
-					<tr>
-						<td>Ответиль(а):</td>
-						<td><?php echo $answer; ?></td>
-					</tr>
-            	</table>
-	        </div>
+        <div class = "col-md-9">
+        	<table height = "150px">
+  					<caption><strong>Информация</strong></caption>
+    					<tr>
+    						<td width="200">Имя:</td>
+    						<td><?php echo $name; ?></td>
+    					</tr>
+    					<tr> 
+    						<td>Фамилья:</td>
+    						<td><?php echo $surname; ?></td>
+    					</tr>
+    					<tr>
+    						<td>Логин:</td>
+    						<td><?php echo $login; ?></td>
+    					</tr>
+    					<tr>
+    						<td>Задал(а) вопрос:</td>
+    						<td><?php echo $ask; ?></td>
+    					</tr>
+    					<tr>
+    						<td>Ответиль(а):</td>
+    						<td><?php echo $answer; ?></td>
+    					</tr>
+          </table>
+        </div>
 	    </div>
-	    <div class = "row">
+	    <div class = "row border border-white padding">
 	        <div class = "col-md-12">
 		        <form action = "/profile" method="post" class = "passwordform">
 		            <p><center><strong>Изменить пароль</strong></center></p>
-		            <table width="50%" height = "150px">
-		            	<tr>
-		            		<td>Текщий пароль:</td>
-		    				<td><input type="password" class = "form-control" name="lastpass" placeholder="Текщий пароль"></td>
-			           	</tr>
-			            <tr> 
-			                <td>Новый пароль:</td>
-			        		<td><input type="password" class = "form-control" name="newpass1" placeholder="Новый пароль"></td>
-			            </tr>
-			        
-			            <tr> 
-			            	<td>Повторите новый пароль:</td>
-			        		<td><input type="password" class = "form-control" name="newpass2" placeholder="Повторите новый пароль"></td>
-			            </tr>
-			            <tr>
-							<td><input name="update" class="btn btn-primary btn-sm" value="Сохранить" type="submit"></td>
-						</tr>
-			        </table>
+		            <div class = "row">
+                  <div class="col-md-6 offset-md-3">
+  		    				  <p><input type="password" class = "form-control" name="lastpass" placeholder="Текщий пароль"></p>
+  			           	<p><input type="password" class = "form-control" name="newpass1" placeholder="Новый пароль"></p>
+  			            <p><input type="password" class = "form-control" name="newpass2" placeholder="Повторите новый пароль"></p>
+  			            <p><input name="update" class="btn btn-primary btn-sm" value="Сохранить" type="submit"></p>
+                  </div>
+                </div>
 			    </form>
 	    	</div>
 	    </div>
@@ -180,38 +169,41 @@
                 $tags = explode(" ", $row['tags']);
                 $metki = '';
                 foreach ($tags as $tag) {
-                  $metki .= '<a class = "badge" href = "/question/?id='. urlencode($tag) . '">'. htmlentities($tag) . '</a> ';
+                  $metki .= '<a class = "badge badge-light" href = "/question/?id='. urlencode($tag) . '">'. htmlentities($tag) . '</a> ';
                 }
 
                 echo '
-                  <div class = "col-md-10">
-                      <blockquote class="blockquote">
-                        <a href = "/question/'. $row['id'] . '" class = "questionlink">' . $row['zagqu'] . '</a>
-                        <div class = "row">
-                          <div class = "col-md-4">
-                            <p> 
-                              <h6>
-                                Asked <a class = "questionlink" href = "/user/'.  $row['login'] . '">' . $row['login'] .  '</a>
-                                  ' . $time . ' ago 
-                                </h6>
-                              </p>
-                           </div>
-                           <div class = "col-md-8">
-                            '. $metki . '
-                           </div>
-                        </div>
-                      </blockquote>
+                  <div class = "row blockquote">
+                    <div class = "col-md-8">
+                        <div class="">
+                          <a href = "/question/'. $row['id'] . '" class = "questionlink">' . $row['zagqu'] . '</a>
+                          <div class = "row">
+                              <div class = "col-md-4">
+                                <p> 
+                                      <small>Asked ' . $time . ' ago </small>
+                                    
+                                  </p>
+                              </div>
+                              <div class = "col-md-8">
+                              '. $metki . '
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class = "col-md-2 border border-white">
+                      <center><small>' . $row['view'] . '</small>
+                          <h6><small>просмотров</small></h6>
+                        </center>
+                    </div>
+
+                    <div class = "col-md-2 border border-white">
+                        <center><small>' . $row['answers'] . '</small>
+                          <h6><small>Ответов</small></h6>
+                        </center>
+                    </div>
                   </div>
-                  <div class = "col-md-1 ans">
-                    <center>' . $row['view'] . '
-                      <h5><small>просмотров</small></h5>
-                    </center>
-                  </div>
-                  <div class = "col-md-1 ans">
-                    <center>' . $row['answers'] . '
-                      <h5><small>Ответов</small></h5>
-                    </center>
-                  </div>';
+                  ';
                 }
             }
 		    ?>

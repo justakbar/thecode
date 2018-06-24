@@ -21,7 +21,6 @@
           $_SESSION['username'] = $d['login'];
           $_SESSION['hash'] = $hash;
           $_SESSION['email'] = $d['email'];
-          $_SESSION['let'] = "iletugo";
         }
       }
       else 
@@ -78,45 +77,39 @@
     </head>
 
     <body>
-        <nav class="navbar navhead navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <i class="glyphicon glyphicon-menu-hamburger" style="color: white;"></i>
-                    </button>
-                    <a class="navbar-brand brand" href="http://thecode.uz"><img src="/resource/img/thecode.png" height="30" alt="logotip"></a>
-                </div>
+        <nav class="navbar navhead navbar-expand-lg navbar-dark bg-dark fixed-top">
+          <div class="container">
+            <a class="navbar-brand" href="http://thecode.uz"><img src="/resource/img/thecode.png" height="20px;"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarText">
+              <ul class="navbar-nav mr-auto">
+                <li class = "nav-item"><a class = "nav-link" href="/question">Вопросы</a></li>
+                <?php if(isset($_COOKIE['hash']) && isset($_COOKIE['cookie']) &&
+                  $_COOKIE['hash'] == $_SESSION['hash'] && $_COOKIE['cookie'] == $_SESSION['code']) { ?>
+                    <li class = "nav-item"><a class = "nav-link" href="/profile">Профиль</a></li>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><a href="/question">Вопросы</a></li>
-                        <?php if(isset($_COOKIE['hash']) && isset($_COOKIE['cookie']) &&
-                          $_COOKIE['hash'] == $_SESSION['hash'] && $_COOKIE['cookie'] == $_SESSION['code']) { ?>
-                            <li><a href="/profile">Профиль</a></li>
-
-                            <?php } ?>
-                    </ul>
-                    <form action="/search" method="get" class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search" name="qu">
-                        </div>
-                    </form>
-                    <?php if(!isset($_COOKIE['hash']) || !isset($_COOKIE['cookie']) ||
+                    <?php } ?>
+              </ul>
+              <form class="form-inline my-2 my-lg-0 mx-auto">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              </form>
+              <?php if(!isset($_COOKIE['hash']) || !isset($_COOKIE['cookie']) ||
                           $_COOKIE['hash'] != $_SESSION['hash'] || $_COOKIE['cookie'] != $_SESSION['code']) { ?>
-                        <div class="nav navbar-nav navbar-right">
-                            <a class="btn btn-default margin" href="/login">Войти</a>
-                            <a class="btn btn-success margin" href="/registration">Регистрация</a>
-                        </div>
-                        <?php } else if(isset($_COOKIE['hash']) && isset($_COOKIE['cookie']) &&
-                          $_COOKIE['hash'] == $_SESSION['hash'] && $_COOKIE['cookie'] == $_SESSION['code']) { ?>
-                            <div class="nav navbar-nav navbar-right">
-                                <a class="btn btn-default margin" href="/ask">Задать вопрос</a>
-                            </div>
-                            <?php } ?>
-                </div>
-                <!-- /.navbar-collapse -->
+              <div class="navbar-text">
+                  <a class="btn btn-info" href="/login">Войти</a>
+                  <a class="btn btn-success" href="/registration">Регистрация</a>
+              </div>
+              <?php } else if(isset($_COOKIE['hash']) && isset($_COOKIE['cookie']) &&
+                $_COOKIE['hash'] == $_SESSION['hash'] && $_COOKIE['cookie'] == $_SESSION['code']) { ?>
+                  <div class="navbar-text">
+                      <a class="btn btn-secondary" href="/ask">Задать вопрос</a>
+                  </div>
+                  <?php } ?>
             </div>
-            <!-- /.container-fluid -->
+          </div>
+
         </nav>
         <div class="all">

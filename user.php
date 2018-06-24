@@ -44,7 +44,7 @@
 <div class ="container">
   <div class="row">
     <div class="col-md-9">
-      <div class = "row">
+      <div class = "row row border border-white padding rounded">
           <?php 
               if(!empty($module))
               {
@@ -58,7 +58,7 @@
               <caption><center><strong>Информация</strong></center></caption>
           
               <tr>
-                <td>Имя:</td>
+                <td width="200">Имя:</td>
                 <td><?php echo $name; ?></td>
               </tr>
               <tr> 
@@ -100,38 +100,40 @@
                 $tags = explode(" ", $row['tags']);
                 $metki = '';
                 foreach ($tags as $tag) {
-                  $metki .= '<a class = "badge" href = "/question/?id='. urlencode($tag) . '">'. htmlentities($tag) . '</a> ';
+                  $metki .= '<a class = "badge badge-light" href = "/question/?id='. urlencode($tag) . '">'. htmlentities($tag) . '</a> ';
                 }
 
                 echo '
-                  <div class = "col-md-10">
-                      <blockquote class="blockquote">
+                <div class = "row blockquote">
+                  <div class = "col-md-8">
+                      <div class="">
                         <a href = "/question/'. $row['id'] . '" class = "questionlink">' . $row['zagqu'] . '</a>
                         <div class = "row">
-                          <div class = "col-md-4">
-                            <p> 
-                              <h6>
-                                Asked <a class = "questionlink" href = "/user/'.  $row['login'] . '">' . $row['login'] .  '</a>
-                                  ' . $time . ' ago 
-                                </h6>
+                            <div class = "col-md-4">
+                              <p> 
+                                <small>Asked ' . $time . ' ago </small>
                               </p>
-                           </div>
-                           <div class = "col-md-8">
+                            </div>
+                            <div class = "col-md-8">
                             '. $metki . '
-                           </div>
+                            </div>
                         </div>
-                      </blockquote>
+                    </div>
                   </div>
-                  <div class = "col-md-1 ans">
-                    <center>' . $row['view'] . '
-                      <h5><small>просмотров</small></h5>
-                    </center>
+
+                  <div class = "col-md-2 border border-white">
+                    <center><small>' . $row['view'] . '</small>
+                        <h6><small>просмотров</small></h6>
+                      </center>
                   </div>
-                  <div class = "col-md-1 ans">
-                    <center>' . $row['answers'] . '
-                      <h5><small>Ответов</small></h5>
-                    </center>
-                  </div>';
+
+                  <div class = "col-md-2 border border-white">
+                      <center><small>' . $row['answers'] . '</small>
+                        <h6><small>Ответов</small></h6>
+                      </center>
+                  </div>
+                </div>
+                ';
             }
           }
         ?>

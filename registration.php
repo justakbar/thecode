@@ -38,36 +38,38 @@
 ?>
 <div class ="container">
   <div class="row">
-    <div class = "col-md-4 col-md-offset-4">
-    	<div class="panel panel-default">
-          	<div class="panel-heading">
-          		<center><strong>Регистрация</strong></center>
-          	</div>
-          	<div class = "panel-body">
-		    	<form action = "/registration" method="post" class = "form-group">
-    				<p><input type="text" class="form-control loginplace" name = "frst_name" placeholder="Имя"></p>
-    				<p><input type="text" class="form-control loginplace" name = "lst_name" placeholder="Фамилья"></p>
-		    		<p><input type="email" class="form-control loginplace" name = "email" placeholder="Эл. почта"></p>
-		    		<p><input type="text" class="form-control loginplace" name = "usrname" placeholder="Логин"></p>
-		    		<p><input type="password" class="form-control loginplace" name = "paswrd1" placeholder="Пароль"></p>
-		    		<p><input type="password" class="form-control loginplace" name = "paswrd2" placeholder="Повторите пароль"></p>
-	    			<button type = "submit" class = "btn btn-success btn-sm" name = "snd">Регистрация</button>
-	    			<a href = "/login" name="send" class = "btn btn-primary btn-sm">Вход</a>
-		    	</form>
-	    	</div>
-	    </div>
-	    <?php
-        if(count($err) > 0) {
-	      ?>
-	      <div class="alert alert-danger" role="alert">
-	        <?php 
-	          foreach ($err as $errors) {
-	            echo '<p><i class="fas fa-exclamation-triangle"> </i> '.$errors . '</p>';
-	          }
-	        ?>
-	      </div>
-	      <?php } ?>
-	</div>
+    <div class = "col-md-6 offset-md-3">
+      	<div class="card text-center mx-auto">
+        	<div class="card-header">
+        		<center><strong>Регистрация</strong></center>
+        	</div>
+        	<div class = "card-body">
+  		    	<form action = "/registration" method="post" class = "form-group">
+      				<p><input type="text" class="form-control loginplace" name = "frst_name" placeholder="Имя"></p>
+      				<p><input type="text" class="form-control loginplace" name = "lst_name" placeholder="Фамилья"></p>
+  		    		<p><input type="email" class="form-control loginplace" name = "email" placeholder="Эл. почта"></p>
+  		    		<p><input type="text" class="form-control loginplace" name = "usrname" placeholder="Логин"></p>
+  		    		<p><input type="password" class="form-control loginplace" name = "paswrd1" placeholder="Пароль"></p>
+  		    		<p><input type="password" class="form-control loginplace" name = "paswrd2" placeholder="Повторите пароль"></p>
+  	    			<div class = "float-left">
+                <button type = "submit" class = "btn btn-success btn-sm" name = "snd">Регистрация</button>
+    	    			<a href = "/login" name="send" class = "btn btn-primary btn-sm">Вход</a>
+              </div>
+  		    	</form>
+    	    </div>
+  	    </div>
+  	    <?php
+          if(count($err) > 0) {
+  	      ?>
+  	      <div class="alert alert-danger" role="alert">
+  	        <?php 
+  	          foreach ($err as $errors) {
+  	            echo '<p><i class="fas fa-exclamation-triangle"> </i> '.$errors . '</p>';
+  	          }
+  	        ?>
+  	      </div>
+  	     <?php } ?>
+    </div>
   </div>
 </div>
 <?php include 'foot.php'; ?>
