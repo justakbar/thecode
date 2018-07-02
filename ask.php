@@ -31,21 +31,18 @@
 	  		if($query)
 	  		{
 	  			$user = $_SESSION['username'];
-	  			$query = "SELECT `id` FROM `questions` WHERE `login` = '$user' ORDER BY `id` DESC LIMIT 1";
-
-	  			$query = mysqli_query($dbc, $query);
-	  			$row = mysqli_fetch_assoc($query);
+	  			$last_id = mysqli_insert_id($dbc);
 
 	  			$qu = "SELECT `ask` FROM `users` WHERE `login` = '$user'";
 	  			$qu = mysqli_query($dbc, $qu);
 
 	  			$rows = mysqli_fetch_assoc($qu);
 	  			$add = $rows['ask'];
-	  			$add .= $row['id'] . ' ';
+	  			$add .= $last_id . ' ';
 
 	  			$qu = "UPDATE `users` SET `ask` = '$add' WHERE `login` = '$user'";
 	  			$qu = mysqli_query($dbc,$qu);
-	  			header("Location: /question");
+	  			/*header("Location: /question");*/
 	  		}
 	  		else $err[] = 'Something went wrong!';
 	  	}
