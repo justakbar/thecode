@@ -1,7 +1,7 @@
 <?php 
 session_start();
-include 'include/function.php';
-include 'include/ordvac.class.php';
+include 'include/validation.function.php';
+include 'include/getOrdvacFunctions.php';
 include 'head.php';
 ?>
 
@@ -10,8 +10,7 @@ include 'head.php';
 		<div class="col-md-9">
         	<div class = "main">
 
-<?php 
-$orders = new orders;
+<?php
 ?>
 <div class="alert alert-success" role="alert">
 	<div class = "row">
@@ -26,7 +25,7 @@ $orders = new orders;
 <?php
 if ($page == 'ordvac' && !isset($module)) {
 
-	$data = $orders->getData();
+	$data = getData();
 	echo '<h4>Заказы</h4>';
 	foreach ($data as $value => $key) {
 	?>
@@ -58,10 +57,10 @@ if ($page == 'ordvac' && !isset($module)) {
 	</div>
 <?php
 	}
-	echo $orders->getPagination($_GET['page']);
+	echo getPagination($_GET['page']);
 } else if ($page == 'ordvac' && is_numeric($module)) {
-	$getOrder = new getOrder;
-	$value = $getOrder->getOrderData($module);
+
+	$value = getOrderData($module);
 ?>
 	<div class = "border border-white padding-order margin">
 		<div class = "row">
@@ -158,5 +157,4 @@ if ($page == 'ordvac' && !isset($module)) {
 		</div>
 	</div>
 </div>
-</body>
-</hmtl>
+<?php include 'foot.php'; ?>

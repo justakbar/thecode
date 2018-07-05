@@ -1,18 +1,13 @@
 <?php
   session_start();
+  include 'include/getQuestionsFunctions.php';
   $dbc = mysqli_connect('localhost','algorithms','nexttome', 'algoritm');
   if (!$dbc) {
-          die("Connection failed: " . mysqli_connect_error());
-      }
-  if(isset($_GET['qu']))
-  {
-    $qu = htmlentities($_GET['qu'], ENT_QUOTES);
-
-    $query = "SELECT * FROM `questions` WHERE `zagqu` LIKE '%$qu%'
-                  OR `question` LIKE '%$qu%' OR `tags` LIKE '%$qu%'";
-
-    $query = mysqli_query($dbc, $query);
+    die("Connection failed: " . mysqli_connect_error());
   }
+  if(isset($_GET['qu']))
+    $qu = htmlentities($_GET['qu'], ENT_QUOTES);
+  $data = search($qu);
 
   include 'head.php'; 
 ?>
@@ -21,45 +16,38 @@
     <div class="col-md-9">
       <div class = "main">
         <?php 
-          if($query)
-            if(mysqli_num_rows($query) > 0)
-            {
-              while($row = mysqli_fetch_assoc($query))
-              {
-                echo '
-                    <div class = "row">
-                      <div class = "col-md-10">
-                        <blockquote class="blockquote">
-                          <a href = "/question/'. $row['id'] . '" class = "questionlink">' . $row['zagqu'] . '</a>
-                          <div class = "row">
-                            <div class = "col-md-4">
-                              <p> 
-                                <h6>
-                                  Asked <a class = "questionlink" href = "/user/'.  $row['login'] . '">' . $row['login'] .  '</a>
-                                    ' . $time . ' ago 
-                                </h6>
-                              </p>
-                            </div>
-                            <div class = "col-md-8">
-                                '. $metki . '
-                            </div>
-                          </div>
-                        </blockquote>
+          $pagination = array_pop($data);
+          foreach ($data as $key => $value) {
+        ?>
+            <div class = "row blockquote">
+              <div class = "col-md-8">
+                  <a href = "/question/<?php echo $value['id']; ?>" class = "questionlink"><?php echo $value['zagqu']; ?></a>
+                  <div class = "row">
+                      <div class = "col-md-5">
+                        <p> 
+                              <small>Asked <a class = "a" href = "/user/<?php echo $value['login']; ?>"><?php echo $value['login']; ?> </a><?php echo $value['dates']; ?></small>
+                            </p>
                       </div>
-                      <div class = "col-md-1 ans">
-                        <center>' . $row['view'] . '
-                          <h5><small>просмотров</small></h5>
-                        </center>
+                      <div class = "col-md-7">
+                      <?php echo $value['tags']; ?>
                       </div>
-                      <div class = "col-md-1 ans">
-                        <center>' . $row['answers'] . '
-                          <h5><small>Ответов</small></h5>
-                        </center>
-                      </div>
-                    </div>';
-              }
-            }
-            else echo "Nothing";
+                  </div>
+              </div>
+
+              <div class = "col-md-2 border border-white">
+                <center><small><?php echo $value['views']; ?></small>
+                    <h6><small>просмотров</small></h6>
+                  </center>
+              </div>
+
+              <div class = "col-md-2 border border-white">
+                  <center><small><?php echo $value['answers']; ?></small>
+                    <h6><small>Ответов</small></h6>
+                  </center>
+              </div>
+            </div>
+          <?php
+            } echo $pagination;
         ?>
       </div>
     </div>
