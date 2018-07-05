@@ -46,6 +46,10 @@ body
 	padding: 10px;
 	margin-bottom: 10px;
 }
+.a
+{
+	text-decoration: none;
+}
 .row button
 {
 	outline: none;
@@ -135,10 +139,17 @@ body
 	background-color: #EBEDEF;
 	/*margin: 0px 5px;*/
 }
+.questionlink
+{
+	color: #666;
+	font-family: calibri;
+	font-weight: bold;
+}
 .questionlink:hover
 {
 	text-decoration: none;
 	outline: none;
+	color: #333;
 }
 .back
 {
@@ -148,6 +159,20 @@ body
 {
 	display: block;
 }*/
+
+.ques pre {
+  display: block;
+  padding: 9.5px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.42857143;
+  /*color: #333;*/
+  word-break: break-all;
+  word-wrap: break-word;
+  background-color: #F9F2F4;
+  /*border: 1px solid #ccc;
+  border-radius: 4px;*/
+}
 .footer 
 {
    	position: absolute;
@@ -197,3 +222,32 @@ body
 
 /* Add a grey background color on mouse-over */
 .pagination a:hover:not(.active) {background-color: #ddd;}
+
+.cost
+{
+	color: #666;
+	font-family: calibri;
+}
+
+.padding-order
+{
+	padding: 30px;
+}
+
+.costwidth
+{
+	width: 200px;
+	float: left;
+	margin-right: 20px;
+	margin-bottom: 10px;
+}
+.valwidth
+{
+	width: 200px;
+}
+
+.tekst pre
+{
+	font-family: calibri;
+}
+

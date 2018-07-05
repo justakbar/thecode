@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include_once 'include/function.php';
+    include_once 'include/validation.function.php';
     $dbc = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
     $err = array();
     $msg = "";
@@ -14,62 +14,60 @@
         $usrname = Formchars($_POST['usrname']);
         $paswrd = Formchars($_POST['paswrd']);
         
-
-
-          if(!empty($usrname) || !empty($paswrd))
+        if(!empty($usrname) || !empty($paswrd))
+        {
+          if( !preg_match("/^[a-zA-Z0-9_]+$/",$usrname) || 
+             strlen($usrname) < 5 || strlen($usrname) > 20 || strlen($paswrd) < 8 )
+            $err[] = "Неверные данные!";
+          else
           {
-            if( !preg_match("/^[a-zA-Z0-9_]+$/",$usrname) || 
-               strlen($usrname) < 5 || strlen($usrname) > 20 || strlen($paswrd) < 8 )
-              $err[] = "Неверные данные!";
-            else
+            $pass = sha1(sha1($paswrd));
+            $query = "SELECT * FROM `users` WHERE login = '$usrname' AND password = '$pass'";
+            $data = mysqli_query($dbc, $query);
+            $row = mysqli_fetch_assoc($data); 
+
+            if(mysqli_num_rows($data) == 1)
             {
-              $pass = sha1(sha1($paswrd));
-              $query = "SELECT * FROM `users` WHERE login = '$usrname' AND password = '$pass'";
-              $data = mysqli_query($dbc, $query);
-              $row = mysqli_fetch_assoc($data); 
-
-              if(mysqli_num_rows($data) == 1)
+              if($row['confirm'] == 1)
               {
-                if($row['confirm'] == 1)
-                {
-                  function generateCode($length=10) {
+                function generateCode($length=10) {
 
-                    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHI JKLMNOPRQSTUVWXYZ0123456789";
-                    $code = "";
-                    $clen = strlen($chars) - 1;
-                    while (strlen($code) < $length) {
-                      $code .= $chars[mt_rand(0,$clen)];
-                    }
-                  return $code;
+                  $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHI JKLMNOPRQSTUVWXYZ0123456789";
+                  $code = "";
+                  $clen = strlen($chars) - 1;
+                  while (strlen($code) < $length) {
+                    $code .= $chars[mt_rand(0,$clen)];
                   }
-                  $email = $row['email'];
-                  $id = $row['user_id'];
-                  $hash = md5(generateCode());
-                  mysqli_query($dbc,"UPDATE users SET hash = '$hash' WHERE user_id = '$id'");
-                  
-                  $_SESSION['id'] = $row['user_id'];
-                  $_SESSION['name'] = $row['first_name'];
-                  $_SESSION['surname'] = $row['last_name'];
-                  $_SESSION['username'] = $usrname;
-                  $_SESSION['hash'] = $hash;
-                  $_SESSION['email'] = $email;
-                  $_SESSION['code'] = substr(sha1(sha1($row['email'])), 0, -6);
-
-                  setcookie('cookie', $_SESSION['code'], time() + 60*60*24);
-                  setcookie('hash', $hash, time() + 60*60*24);
-
-                  header("Location: ". $_SERVER['REQUEST_URI']);
+                return $code;
                 }
-                else {
-                  $_SESSION['activate'] = $row['email'];
-                  $err[] = "Подтвердите эл.почту!";
-                }
+                $email = $row['email'];
+                $id = $row['user_id'];
+                $hash = md5(generateCode());
+                mysqli_query($dbc,"UPDATE users SET hash = '$hash' WHERE user_id = '$id'");
+                
+                $_SESSION['id'] = $row['user_id'];
+                $_SESSION['name'] = $row['first_name'];
+                $_SESSION['surname'] = $row['last_name'];
+                $_SESSION['username'] = $usrname;
+                $_SESSION['hash'] = $hash;
+                $_SESSION['email'] = $email;
+                $_SESSION['code'] = substr(sha1(sha1($row['email'])), 0, -6);
+
+                setcookie('cookie', $_SESSION['code'], time() + 60*60*24);
+                setcookie('hash', $hash, time() + 60*60*24);
+
+                header("Location: ". $_SERVER['REQUEST_URI']);
               }
-              else $err[] = "Неверный логин или пароль";
+              else {
+                $_SESSION['activate'] = $row['email'];
+                $err[] = "Подтвердите эл.почту!";
+              }
             }
+            else $err[] = "Неверный логин или пароль";
           }
-          else $err[] = "Пусто!";
         }
+        else $err[] = "Пусто!";
+      }
     }
     if($module == 'activate')
     {
@@ -117,7 +115,7 @@
       <?php
         if(count($err) > 0) {
       ?>
-      <div class = "errors">
+      <div class = "margin">
         <?php 
           foreach ($err as $errors) {
           echo '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"> </i> '.$errors.'</div>';

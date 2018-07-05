@@ -25,7 +25,7 @@
     if($page == 'index')
       include 'home.php';
     else if($page == 'question')
-      include 'question.php'; 
+      include 'question.php';
     else if($page == 'login')
       include_once 'login.php';
     else if($page == 'registration' && !isset($module))

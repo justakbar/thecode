@@ -5,7 +5,11 @@
     {
       $hash = $_COOKIE['hash'];
       $code = $_COOKIE['cookie'];
+      $dbc = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
 
+      if (!$dbc) {
+        exit("Error");
+      }
       $q = "SELECT * FROM `users` WHERE hash = '$hash'";
       $q = mysqli_query($dbc, $q);
 
@@ -55,7 +59,21 @@
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="/resource/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/resource/css/style.css">
+        <link rel="stylesheet" type="text/css" href="/resource/css/fontawesome.css">
+        <link rel="stylesheet" type="text/css" href="/resource/css/fa-solid.css">
         <script src="/resource/js/js.js"></script>
+
+    <?php 
+      if($page == 'ordvac' && $module == 'order')
+      {
+    ?>
+        <style type="text/css" media="all">
+          @import "/resource/css/widgEditor.css";
+        </style>
+        <script type="text/javascript" src="/resource/js/widgEditor.js"></script>
+    <?php 
+      }
+    ?>
         <?php 
     if($page == 'ask' || $page == 'question' && is_numeric($module))
     {
@@ -87,14 +105,15 @@
             <div class="collapse navbar-collapse" id="navbarText">
               <ul class="navbar-nav mr-auto">
                 <li class = "nav-item"><a class = "nav-link" href="/question">Вопросы</a></li>
+                <li class = "nav-item"><a class = "nav-link" href="/ordvac">Заказы</a></li>
                 <?php if(isset($_COOKIE['hash']) && isset($_COOKIE['cookie']) &&
                   $_COOKIE['hash'] == $_SESSION['hash'] && $_COOKIE['cookie'] == $_SESSION['code']) { ?>
                     <li class = "nav-item"><a class = "nav-link" href="/profile">Профиль</a></li>
 
                     <?php } ?>
               </ul>
-              <form class="form-inline my-2 my-lg-0 mx-auto">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <form class="form-inline my-2 my-lg-0 mx-auto" action = '/search' method="get">
+                <input class="form-control mr-sm-2" type="search" name = "qu" placeholder="Search" aria-label="Search">
               </form>
               <?php if(!isset($_COOKIE['hash']) || !isset($_COOKIE['cookie']) ||
                           $_COOKIE['hash'] != $_SESSION['hash'] || $_COOKIE['cookie'] != $_SESSION['code']) { ?>

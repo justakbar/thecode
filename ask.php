@@ -1,6 +1,7 @@
 <?php 
 	session_start();
-	$dbc = mysqli_connect('localhost','algorithms','nexttome', 'algoritm'); 
+	$dbc = mysqli_connect('localhost','algorithms','nexttome', 'algoritm');
+	include 'include/getQuestionsFunctions.php';
 	if (!$dbc) {
           die("Connection failed: " . mysqli_connect_error());
       }
@@ -43,6 +44,7 @@
 	  			$qu = "UPDATE `users` SET `ask` = '$add' WHERE `login` = '$user'";
 	  			$qu = mysqli_query($dbc,$qu);
 	  			/*header("Location: /question");*/
+	  			$msg = '<div class = "alert alert-success">Success</div>';
 	  		}
 	  		else $err[] = 'Something went wrong!';
 	  	}
@@ -68,7 +70,7 @@
 		      			}
 	      			?>
 	        		<form action = "/ask" method="post">
-
+	        			<?php echo $msg; ?>
 		        		<p>
 		        			<h4>Заголовок вопроса:</h4>
 		        			<input type="text" name="zagqu" class = "form-control" placeholder="Заголовка вопрос">	

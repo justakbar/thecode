@@ -1,7 +1,7 @@
 <?php
     session_start();
     $dbc = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
-    include_once 'include/function.php';
+    include_once 'include/validation.function.php';
     $err = array();
     if(!isset($_COOKIE['hash']) || !isset($_COOKIE['cookie']) ||
                           $_COOKIE['hash'] != $_SESSION['hash'] || $_COOKIE['cookie'] != $_SESSION['code'])

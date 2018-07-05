@@ -3,7 +3,8 @@
     $err = array();
     $dbc = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
 
-    if(!isset($_COOKIE['cookie']) || !isset($_COOKIE['hash']))
+    if(!isset($_COOKIE['hash']) || !isset($_COOKIE['cookie']) ||
+                          $_COOKIE['hash'] != $_SESSION['hash'] || $_COOKIE['cookie'] != $_SESSION['code'])
     {
         unset($_COOKIE['cookie']);
         unset($_COOKIE['hash']);
@@ -14,10 +15,60 @@
         header("Location: /login");
     }
 
-    include 'include/function.php';
+    include 'include/validation.function.php';
     include 'head.php';
     $hash = $_SESSION['hash'];
     $email = $_SESSION['email'];
+
+    if(isset($_POST['contact']))
+    {
+      $contact_number = htmlentities(trim($_POST['phonenumber']),ENT_QUOTES);
+      $email = htmlentities(trim($_POST['contactemail']),ENT_QUOTES);
+      $messenger = htmlentities(trim($_POST['messenger']),ENT_QUOTES);
+      $messenger_data = htmlentities(trim($_POST['messengerdata']),ENT_QUOTES);
+
+      if(!empty($contact_number))
+      {
+        if($contact_number[0] !== '+')
+          $contact_number = '+'.$contact_number;
+
+        if(strlen($contact_number) != 13 || !is_numeric($contact_number))
+          $error[] = 'Телефон номер неверный!';
+      }
+      
+      if(!empty($email))
+      {
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+          $error[] = 'Эл. почта неверный!';
+      }
+
+      if(!empty($messenger_data))
+      {
+        if(isset($messenger))
+        {
+          if($messenger != 1 && $messenger != 2)
+            $error[] = 'WhatsApps или Telegram!';
+        }
+        if($messenger_data[0] !== '+')
+          $messenger_data = '+'.$messenger_data;
+
+        if(strlen($messenger_data) != 13 || !is_numeric($messenger_data))
+          $error[] = 'Номер мессенджера неверный!';
+      }
+
+
+      $login = $_SESSION['username'];
+      $id = $_SESSION['id'];
+      if(count($error) == 0)
+      {
+        $messenger_data = $messenger . $messenger_data;
+        $query = mysqli_query($dbc, "UPDATE `users` SET `phonenumber` = '$contact_number', `contactemail` = '$email', `whatstg` = '$messenger_data' WHERE `user_id` = '$id'");
+
+        if($query)
+          $msg = '<div class = "alert alert-success">Success</div>';
+        else $msg = '<div class = "alert" alert-danger">Something went wrong!</div>';
+      }
+    }
 
     if(isset($_POST['update']))
     {
@@ -66,7 +117,7 @@
     $login = $_SESSION['username'];
     $email = $_SESSION['email'];
     $hash = $_SESSION['hash'];
-    $query = mysqli_query($dbc, "SELECT `ask`, `answer` FROM `users` WHERE `hash` = '$hash'");
+    $query = mysqli_query($dbc, "SELECT `ask`, `answer`,`phonenumber`, `contactemail`, `whatstg` FROM `users` WHERE `hash` = '$hash'");
 
     if($query)
     {
@@ -81,6 +132,21 @@
       $answer = explode(" ", $answer);
       array_pop($answer);
       $answer = count($answer);
+
+      $phonenumber = $row['phonenumber'];
+      $contactemail = $row['contactemail'];
+      $whatstg = $row['whatstg'];
+
+      if($whatstg[0] == 1){
+        $type = 'WhatsApps';
+        $selected1 = 'selected';
+      }
+      else if($whatstg[0] == '2') {
+        $type = 'Telegram';
+        $selected2 = 'selected';
+      }
+
+      $whatstg = substr($whatstg, 1);
     }
     else $soraw = array(0);
 ?>
@@ -116,23 +182,74 @@
     						<td>Ответиль(а):</td>
     						<td><?php echo $answer; ?></td>
     					</tr>
+              <tr>
+                <td>Телефон:</td>
+                <td><?php echo $phonenumber; ?></td>
+              </tr>
+              <tr>
+                <td>Мессенджер (<?php echo $type; ?>) :</td>
+                <td><?php echo $whatstg; ?></td>
+              </tr>
+              <tr>
+                <td>Эл. почта:</td>
+                <td><?php echo $contactemail; ?></td>
+              </tr>
           </table>
         </div>
 	    </div>
 	    <div class = "row border border-white padding">
-	        <div class = "col-md-12">
-		        <form action = "/profile" method="post" class = "passwordform">
-		            <p><center><strong>Изменить пароль</strong></center></p>
-		            <div class = "row">
-                  <div class="col-md-6 offset-md-3">
-  		    				  <p><input type="password" class = "form-control" name="lastpass" placeholder="Текщий пароль"></p>
-  			           	<p><input type="password" class = "form-control" name="newpass1" placeholder="Новый пароль"></p>
-  			            <p><input type="password" class = "form-control" name="newpass2" placeholder="Повторите новый пароль"></p>
-  			            <p><input name="update" class="btn btn-primary btn-sm" value="Сохранить" type="submit"></p>
-                  </div>
-                </div>
+        <div class = "col-md-6">
+	        <form action = "/profile" method="post" class = "passwordform">
+            <p>
+              <center>
+                <strong>
+                  Изменить пароль
+                </strong>
+              </center>
+            </p>
+  				  <p><input type="password" class = "form-control" name="lastpass" placeholder="Текщий пароль"></p>
+           	<p><input type="password" class = "form-control" name="newpass1" placeholder="Новый пароль"></p>
+            <p><input type="password" class = "form-control" name="newpass2" placeholder="Повторите новый пароль"></p>
+            <p><input name="update" class="btn btn-primary btn-sm" value="Изменить" type="submit"></p>
 			    </form>
 	    	</div>
+        <div class = "col-md-6">
+          <?php 
+            if(count($error) > 0) {
+              foreach ($error as $key) {
+                  echo '<div class="alert alert-danger" role="alert">'. $key . 
+                  '</div>';
+                  }
+              }
+          ?>
+          <form action="/profile" method="post">
+            <p>
+              <center>
+                <strong>
+                  Контактные данные
+                </strong>
+              </center  >
+            </p>
+            <?php echo $msg;  ?>
+            <p><input type="text" class = "form-control" name="phonenumber" placeholder="Телефон" value = "<?php echo $phonenumber; ?>"></p>
+            <p><input type="email" class = "form-control" name="contactemail" placeholder="Эл. почта" value = "<?php echo $contactemail; ?>"></p>
+            <p>
+              <div class = "row">
+                <div class = "col-6">
+                  <select class = "custom-select custom-select-sm" name = "messenger">
+                    <option value = "0" selected>Меседжеры</option>
+                    <option value = "1"<?php echo $selected1; ?>>WhatsApp</option>
+                    <option value = "2"<?php echo $selected2; ?>>Telegram</option>
+                  </select>
+                </div>
+                <div class = "col-6">
+                  <input type="text" class = "form-control" name="messengerdata" placeholder="+998931234567" value = "<?php echo $whatstg; ?>">
+                </div>
+              </div>
+            </p>
+            <p><input name="contact" class="btn btn-primary btn-sm" value="Сохранить" type="submit"></p>
+          </form>
+        </div>
 	    </div>
 	    <div class = "row">
 	        <div class = "col-md-12">
@@ -140,26 +257,25 @@
 					if($change == 1) echo '<div class = "alert alert-success"><i class = "glyphicon glyphicon-ok"></i> ' . msgsend(1) . '</div>'; 
           else if($change == 2) echo '<div class = "alert alert-danger">' . msgsend(2) . '</div>';
 
-					if(count($err) > 0) { ?>
-			            <?php 
-			                foreach ($err as $key) {
-			                    echo '<div class="alert alert-danger" role="alert">'. $key . 
-			                    '</div>';
-			                }
-			            ?>
-		        <?php } ?>
+					if(count($err) > 0) {
+            foreach ($err as $key) {
+              echo '<div class="alert alert-danger" role="alert">'. $key . 
+              '</div>';
+            }
+          } ?>
 		    </div>
 		</div>
 		<div class = "row">
 	        <div class = "col-md-12">
 		    <?php 
+          if(count($soraw) > 0)
+            echo '<h4>Вопросы</h4><hr/>';
 		    	foreach ($soraw as $key => $value) 
             {
               $query = "SELECT * FROM `questions` WHERE `id` = '$value'";
               $query = mysqli_query($dbc, $query);
               if($query)
               {
-                echo '<h4>Вопросы</h4><hr/>';
 
                 $row = mysqli_fetch_assoc($query);
                 $since = $row['dates'];
