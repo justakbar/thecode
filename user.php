@@ -130,11 +130,12 @@ session_start();
 						<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 							<div class="panel panel-default">
 								<div class="panel-heading" role="tab" id="headingOne">
-									<h4 class="panel-title">
-										<a role="button" data-toggle="collapse" data-parent="#accordion" href="#<?php echo $num; ?>" aria-expanded="true" aria-controls="collapseOne">
+									<div class = "alert alert-success">
+										<i class="fas fa-sort-down"></i>
+										<a class = "questionlink" role="button" data-toggle="collapse" data-parent="#accordion" href="#<?php echo $num; ?>" aria-expanded="true" aria-controls="collapseOne">
 											<?php echo $val['zagqu']; ?>
 										</a>
-									</h4>
+									</div>
 								</div>
 								<div id="<?php echo $num; ?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 									<div class="panel-body">
@@ -166,12 +167,7 @@ session_start();
 											<hr/>
 											<div class = "row tekst">
 												<div class = "col-md-12">
-													<?php echo $val['text']; ?>
-												</div>
-											</div>
-											<div class = "row">
-												<div class = "col-md-12">
-													<small>Заказчик: <a class = "questionlink" href = "/user/<?php echo $val['login']; ?>"><?php echo $val['full_name']; ?></a></small>
+													<?php echo $val['tekst']; ?>
 												</div>
 											</div>
 										</div>
