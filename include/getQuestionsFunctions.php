@@ -1,32 +1,21 @@
 <?php 
 // ============================= Right Side ================================ //
 	function getMetki () {
-		$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+		$file = fopen('tags.json', 'r');
+		$value = fread($file, 4096);
+		$value = json_decode($value, true);
 
-		if (!$conn) 
-			exit("Error");
-
-		$query = mysqli_query($conn, "SELECT `tags` FROM `questions`");
-
-		if ($query) {
-			while($row = mysqli_fetch_assoc($query))
-				$array .= $row['tags'] . " ";
-		}
-
-		$array = array_count_values(explode(" ", $array));
-		array_pop($array);
-		arsort($array);
-		mysqli_close($conn);
-		return $array;
+		fclose($file);
+		return $value;
 	}
 
 
-	function getSameQuestion ($module) {
+	function getSameQuestion ($module, $conn) {
 		$data = array();
-		$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+		/*$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
 
 		if (!$conn) 
-			exit("Error");
+			exit("Error");*/
 
 		$query = "SELECT `id`, `zagqu` FROM `questions` WHERE `question` LIKE '%$zag%' OR `zagqu` LIKE '%$zag%' OR `tags` LIKE '%$tg%'";
 		$query = mysqli_query($conn, $query);
@@ -43,13 +32,12 @@
 				);
 			}
 		}
-		mysqli_close($conn);
 		return $data;
 	}
 
 // =================================== Get Questions list ============================================ //
 
-	function makeTags($text) {
+	/*function makeTags($text) {
 		$text = explode(" ", $text);
 
 		foreach ($text as $key) {
@@ -57,16 +45,16 @@
 		}
 		return $tags;
 	}
-
-	function getPagination ($id) {
-		$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
-
-		if(!isset($id))
-			$id = 1;
+*/
+	function getPagination ($id,$conn) {
+		/*$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
 
 		if (!$conn) {
 			exit("Error");
-		}
+		}*/
+
+		if(!isset($id))
+			$id = 1;
 		$query = mysqli_query($conn, "SELECT id FROM questions ORDER BY id DESC LIMIT 1");
 		if($query){
 			$row = mysqli_fetch_assoc($query);
@@ -94,7 +82,6 @@
 			else $pagination .= '<a class = "actived" href="/question/?page='. $left .  '"> ' . $left .  '</a>';
 		}
 		$pagination .= '</div>';
-		mysqli_close($conn);
 		return $pagination;
 	}
 
@@ -124,12 +111,11 @@
 	}
 
 
-	function getQuestion () {
-		$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
-		$data = array();
+	function getQuestion ($conn) {
+		/*$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
 		if (!$conn)
-			exit ("Something went wrong!");
-
+			exit ("Something went wrong!");*/
+		$data = array();
 		if (isset($_GET['page']))
 			$page_id = ($_GET['page'] - 1) * 10;
 		else $page_id = 0;
@@ -137,11 +123,11 @@
 		if (isset($_GET['id'])){
 			$tags = $_GET['id'];
 
-			$query = "SELECT id, zagqu, tags, answers, login, dates, views, viewed, view FROM questions WHERE tags LIKE '%$tags%' ORDER BY id DESC LIMIT $page_id, 10";
+			$query = "SELECT id, zagqu, tags, answers, login, dates, view FROM questions WHERE tags LIKE '%$tags%' ORDER BY id DESC LIMIT $page_id, 10";
 			$query = mysqli_query($conn, $query);
 		} else {
 
-			$query = "SELECT id, zagqu, tags, answers, login, dates, views, viewed, view FROM questions ORDER BY id DESC LIMIT $page_id, 10";
+			$query = "SELECT id, zagqu, tags, answers, login, dates, view FROM questions ORDER BY id DESC LIMIT $page_id, 10";
 			$query = mysqli_query($conn, $query);
 		}
 
@@ -150,15 +136,13 @@
 				$data[] = array(
 					'id' => $row['id'],
 					'zagqu' => $row['zagqu'],
-					'tags' => makeTags($row['tags']),
+					'tags' => $row['tags'],
 					'answers' => $row['answers'],
 					'login' => $row['login'],
 					'dates' => makeDate($row['dates']),
 					'views' => $row['view']
-					/*'views' => $this->makeViews($row['views'], $row['viewed'], $row['view'])*/
 				);
 			}
-			mysqli_close($conn);
 		}
 		else exit("error");
 		return $data;
@@ -166,12 +150,12 @@
 
 // ======================================= Get Question Datas =========================================== //
 
-	function makeViews ($userip, $userid, $countviews,$module) {
-		$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+	function makeViews ($userip, $userid, $countviews,$module,$conn) {
+		/*$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
 
 		if (!$conn) {
 			exit("Error");
-		}
+		}*/
 
 		$id = $_SESSION['id'];
 		$ip = $_SERVER['REMOTE_ADDR'];
@@ -194,52 +178,74 @@
 			$qu = mysqli_query($conn, "UPDATE `questions` SET `views` = '$ip', `view` = `view` + 1  WHERE `id` = '$module'");
 			$countviews++;
 		}
-		mysqli_close($conn);
 		return $countviews = ($countviews > 1) ? $countviews . ' views' : $countviews . ' view';
 	}
 
-	function getData ($module) {
+	function getData ($module,$conn) {
 		$data = array();
 
-		$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+		/*$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
 
 		if (!$conn)
-			exit ("Something went wrong!");
+			exit ("Something went wrong!");*/
 
 		$query = "SELECT * FROM questions WHERE id = $module";
 		$query = mysqli_query($conn, $query);
 		if ($query) {
-			if (mysqli_num_rows($query)) {
-				while ($row = mysqli_fetch_assoc($query)) { 
-					$data = array(
-						'id' => $row['id'],
-						'zagqu' => $row['zagqu'],
-						'question' => $row['question'],
-						'tags' => makeTags($row['tags']),
-						'answers' => $row['answers'],
-						'login' => $row['login'],
-						'dates' => makeDate($row['dates']),
-						'views' => makeViews($row['views'], $row['viewed'], $row['view'], $module)
-					);
-				}
+			if (mysqli_num_rows($query)) { 
+				$row = mysqli_fetch_assoc($query);
+				$data = array(
+					'id' => $row['id'],
+					'zagqu' => $row['zagqu'],
+					'question' => $row['question'],
+					'tags' => $row['tags'],
+					'answers' => $row['answers'],
+					'login' => $row['login'],
+					'dates' => makeDate($row['dates']),
+					'views' => makeViews($row['views'], $row['viewed'], $row['view'], $module, $conn)
+				);
 			}
 			else return false;
-			mysqli_close($conn);
+		}
+		return $data;
+	}
+
+	function getAnswers ($module,$conn) {
+		$data = array();
+
+		/*$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+
+		if (!$conn)
+			exit ("Something went wrong!");*/
+		$query = mysqli_query($conn, "SELECT answer, login, dates FROM answer WHERE qu_id = '$module' ORDER BY id DESC");
+
+		if ($query) {
+			if (mysqli_num_rows($query) > 0) {
+				while ($row = mysqli_fetch_assoc($query)) {
+					$data[] = array(
+						'answer' => html_entity_decode($row['answer']),
+						'login' => $row['login'],
+						'dates' => makeDate($row['dates'])
+					);
+				}
+			} else {
+				return false;
+			}
 		}
 		return $data;
 	}
 
 // ======================================== Search ============================================= //
 
-	function getPaginationSearch ($id,$qu) {
-		$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
-
-		if(!isset($id))
-			$id = 1;
+	function getPaginationSearch ($id,$qu,$conn) {
+		/*$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
 
 		if (!$conn) {
 			exit("Error");
-		}
+		}*/
+
+		if(!isset($id))
+			$id = 1;
 		$query = mysqli_query($conn, "SELECT id FROM questions WHERE question LIKE '%$qu%'");
 		if($query){
 			$row = mysqli_num_rows($query);
@@ -267,18 +273,17 @@
 			else $pagination .= '<a class = "actived" href="/search/?qu='. $qu .'&page='. $left .  '"> ' . $left .  '</a>';
 		}
 		$pagination .= '</div>';
-		mysqli_close($conn);
 		return $pagination;
 	}
 
 
-	function search ($key) {
+	function search ($key,$conn) {
 		$data = array();
 
-		$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+		/*$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
 
 		if (!$conn)
-			exit ("Something went wrong!");
+			exit ("Something went wrong!");*/
 		
 		if (isset($_GET['page']))
 			$page_id = ($_GET['page'] - 1) * 10;
@@ -292,7 +297,7 @@
 					$data[] = array(
 						'id' => $row['id'],
 						'zagqu' => $row['zagqu'],
-						'tags' => makeTags($row['tags']),
+						'tags' => $row['tags'],
 						'answers' => $row['answers'],
 						'login' => $row['login'],
 						'dates' => makeDate($row['dates']),
@@ -300,10 +305,29 @@
 						/*'views' => $this->makeViews($row['views'], $row['viewed'], $row['view'])*/
 					);
 				}
-				$data[] = getPaginationSearch($_GET['page'], $qu);
-				mysqli_close($conn);
-			} else { return 'Not found!'; }
+			}
 		}
 		return $data;
+	}
+
+	//======================================= Answer To Question ===========================================//
+
+	function answerToQuestion ($text, $id, $login, $user_id,$conn) {
+		/*$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+
+		if (!$conn)
+			exit ("Something went wrong!");*/
+		$time = time();
+		$query = mysqli_query($conn, "INSERT INTO answer (answer, qu_id, login, dates) VALUES ('$text', '$id', '$login', '$time')");
+
+		if ($query) {
+			$query = mysqli_query($conn, "SELECT answer FROM users WHERE login = '$login'");
+			$row = mysqli_fetch_assoc($query);
+			$last = $row['answer'] . $id . ',';
+
+			$query = mysqli_query($conn, "UPDATE users SET answer = '$last' WHERE login = '$login'");
+
+			return '<div class = "alert alert-success">Success</div>';
+		}
 	}
 ?>

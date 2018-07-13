@@ -1,7 +1,7 @@
 <?php
 	session_start();
-	$dbc = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
-	if (!$dbc) {
+	$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+	if (!$conn) {
 		die("Connection failed: " . mysqli_connect_error());
 	}
 
@@ -29,7 +29,7 @@
 <?php
 
 if($page == 'index') {
-	$data = getQuestion();
+	$data = getQuestion($conn);
 	echo '<h3>Вопросы</h3>';
 	foreach ($data as $key => $value) {
 ?>
@@ -63,54 +63,10 @@ if($page == 'index') {
 	</div>
 </div>
 <?php
+	}
 }
-	echo getPagination($_GET['page']);
-	} else if ($page == 'question' && is_numeric($module)) {
-
-		$value = getData($module);
-
-	if ($value != false) {
-		$exist = true;
-?>
-	<div class = "row">
-		<div class = "col-md-9">
-			<h3><?php echo $value['zagqu'] ?></h3>
-		</div>
-		<div class = "col-md-3">
-			<h6>
-				<small><?php echo $value['views']; ?></small><br/>
-				<small> Asked: <?php echo $value['dates']; ?></small><br/>
-				<small> User: <a class = "questionlink" href = "/user/<?php echo $value['login']; ?>"><?php echo $value['login']; ?></a></small>
-			</h6> 
-		</div>
-	</div>
-	<hr/>
-	<div class = "row">
-		<div class = "col-md-12">
-			<h4>Question</h4>
-			<div class = "ques">
-				<?php echo $value['question']; ?>
-			</div>
-			<div class = "row">
-				<div class = "col-md-12" align = "right">
-					етки: <?php echo $value['tags']; ?>
-				</div>
-			</div>
-		</div>
-	</div>
-	<h3>Ответить</h3>
-	<form action="/question/<?php echo $module; ?>" method="post">
-		<section id="page-demo">
-			<textarea id="txt-content" name="questiontext" data-autosave="editor-content" required></textarea>
-		</section>
-		<input type="submit" name="send" value="Отправить" class="btn btn-secondary margin">
-	</form>
-
-	<?php
-	} else echo "Question not exist!";
-}
-?>
-
+	echo getPagination($_GET['page'],$conn);
+?>	
 			</div>
 		</div>
 		<?php include 'right.php'; ?>

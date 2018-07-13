@@ -1,8 +1,8 @@
 <?php 
 	session_start();
-	$dbc = mysqli_connect('localhost','algorithms','nexttome', 'algoritm');
-	include 'include/getQuestionsFunctions.php';
-	if (!$dbc) {
+	$conn = mysqli_connect('localhost','algorithms','nexttome', 'algoritm');
+	include 'include/ask.function.php';
+	if (!$conn) {
           die("Connection failed: " . mysqli_connect_error());
       }
   	if($_POST['send'])
@@ -12,42 +12,10 @@
 		$login = $_SESSION['username'];
 		$email = $_SESSION['email'];
 		$metki = htmlentities(trim($_POST['metki']),ENT_QUOTES);
-		$times = time();
+		$metki = preg_replace('/\s\s+/', ' ', $metki);
+		$time = time();
 
-		if(empty($zagqu))
-			$err[] = 'Поля "заголовок вопроса" пусто!';
-		if(empty($text))
-			$err[] = 'Поля "основной текст" пусто!';
-		if(empty($metki))
-			$err[] = 'Добавтье не менее 1 и не более 5 метки!';
-		/*$part = count(explode(" ", $metki));*/
-		$part = str_word_count($metki);
-		if($part >= 5 || $part < 0)
-			$err[] = 'Добавтье не менее 1 и не более 5 метки!';
-		
-		if(count($err) == 0)
-		{
-			$query = "INSERT INTO `questions` (zagqu, question, tags, answers, email, login, dates, views, viewed, view) VALUES ('$zagqu', '$text', '$metki', '0', '$email', '$login', '$times', '', '', '0')";
-	  		$query = mysqli_query($dbc,$query);
-	  		if($query)
-	  		{
-	  			$user = $_SESSION['username'];
-	  			$last_id = mysqli_insert_id($dbc);
-
-	  			$qu = "SELECT `ask` FROM `users` WHERE `login` = '$user'";
-	  			$qu = mysqli_query($dbc, $qu);
-
-	  			$rows = mysqli_fetch_assoc($qu);
-	  			$add = $rows['ask'];
-	  			$add .= $last_id . ' ';
-
-	  			$qu = "UPDATE `users` SET `ask` = '$add' WHERE `login` = '$user'";
-	  			$qu = mysqli_query($dbc,$qu);
-	  			/*header("Location: /question");*/
-	  			$msg = '<div class = "alert alert-success">Success</div>';
-	  		}
-	  		else $err[] = 'Something went wrong!';
-	  	}
+		$msg = ask ($zagqu, $text, $login, $metki, $time,$conn);
 	}
 	/*$i = 0;
 	while(++$i < 100){
@@ -61,16 +29,15 @@
 	    	<div class="col-md-9">
 	      		<div class = "main">
 	      			<?php 
-	      				if(count($err) > 0)
+	      				if(count($msg) > 0)
 	      				{
 	      					echo "<h4>Исправьте!</h4>";
-		      				foreach ($err as $error) {
-		      					echo '<div class="alert alert-danger" role="alert">' . $error . ' </div>';
+		      				foreach ($msg as $error) {
+		      					echo $error;
 		      				}
 		      			}
 	      			?>
 	        		<form action = "/ask" method="post">
-	        			<?php echo $msg; ?>
 		        		<p>
 		        			<h4>Заголовок вопроса:</h4>
 		        			<input type="text" name="zagqu" class = "form-control" placeholder="Заголовка вопрос">	
@@ -85,7 +52,6 @@
 		                </section>
 
 		                <p>
-		               		<?php echo $msg; ?>
 		                	<h4>Метки</h4>
 		                	<input type="text" name="metki" placeholder="введите не менее 1 и не более 5" class = "form-control">
 		                </p>

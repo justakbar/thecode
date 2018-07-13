@@ -4,50 +4,6 @@ function Formchars($p)
 	return htmlspecialchars(trim($p));
 }
 
-
-function validation($frst_name,$lst_name,$usrname,$paswrd1,$paswrd2,$email)
-{
-	$dbc = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
-	$err = array();
-
-	if( !preg_match("/^[a-zA-Zа-яА-Я]+$/iu",$frst_name))
-		$err[] = "Имя и Фамилия может состоять только из букв";
-
-	if( !preg_match("/^[a-zA-Zа-яА-Я]+$/iu",$lst_name))
-		$err[] = "Имя и Фамилия может состоять только из букв";
-
-	if((strlen($frst_name) < 1 || strlen($frst_name) > 30) && (strlen($lst_name) < 1 || strlen($lst_name) > 30) )
-		$err[] = "Имя и Фамилия должен быть не меньше 5-х символов и не больше 30";
-
-	if( preg_match("/^[a-zA-Z]+$/",$usrname))
-		if( !preg_match("/^[a-zA-Z0-9_]+$/",$usrname))
-			$err[] = "Логин может состоять только из букв английского алфавита";
-
-	if( (strlen($usrname) < 5 || strlen($usrname) > 20) )
-		$err[] = "Логин должен быть не меньше 5-х символов и не больше 20";
-
-	if($paswrd1 !== $paswrd2)
-		$err[] = "Пароли не совпадают";
-
-
-	if(strlen($paswrd1) < 8)
-		$err[] = "Пароль должен быть не меньше 8-х символов";
-
-	$query1 = "SELECT `email` FROM `users` WHERE email = '$email'";
-	$query2 = "SELECT `login` FROM `users` WHERE login = '$usrname'";
-
-	$data1 = mysqli_query($dbc, $query1);
-	$data2 = mysqli_query($dbc, $query2);
-
-	if(mysqli_num_rows($data1) > 0)
-		$err[] = "Эл.почта уже существует!";
-
-	if(mysqli_num_rows($data2) > 0)
-		$err[] = "Логин уже существует!";
-
-	return $err;
-}
-
 function checkupdate($first_name, $last_name, $login)
 {
 	$err = array();
@@ -104,37 +60,44 @@ function msgsend($num)
 		return "Что то пошьло не так!";
 }
 
-function validateOrder($zagqu, $cost, $valyuta, $domain, $text){
-
-	$dbc = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
-
-	if (!$dbc)
-		exit("Error");
+function validateOrder($zagqu, $cost, $valyuta, $domain, $text, $conn){
 
 	if(strlen($zagqu) > 150 || strlen($zagqu) < 1)
 		$err[] = "Название заказа должна состоять из 1 - 150 символов!";
 
-	if(!is_numeric($_POST['cost']))
+	if(!is_numeric($cost))
 		$err[] = 'На поле "цена" должно быть число!';
 
-	if($valyuta < 1 || $valyuta > 3)
+	if($valyuta != 'RUB' && $valyuta != 'UZS' && $valyuta != 'USD')
 		$err[] = "Неизвестная валюта!";
 
 	if($domain < 1 || $domain > 4)
 		$err[] = 'Неизвестная сфера деятельности!';
 
-	$times = time();
+	$date = time();
 	$login = $_SESSION['username'];
 	$email = $_SESSION['email'];
+	$id = $_SESSION['id'];
 	$full_name = $_SESSION['name'] . ' ' . $_SESSION['surname'];
 
 	if(count($err) == 0){
-		$query = "INSERT INTO `ordvac` (zagqu, tekst, login, email, full_name, tsena, viewed, views, published, visibility, deleted) VALUES ('$zagqu', '$text', '$login', '$email', '$full_name', '$cost', '', '0', '$times', '1', '0')";
+		$cost .= ' ' . $valyuta;
+		$query = "INSERT INTO `ordvac` (zagqu, tekst, login, email, full_name, tsena, viewed, views, published, visibility, deleted) VALUES ('$zagqu', '$text', '$login', '$email', '$full_name', '$cost', '', '0', '$date', '1', '0')";
 
-		$query = mysqli_query($dbc, $query);
+		$query = mysqli_query($conn, $query);
 
-		if($query)
+		if($query) {
+			$last = mysqli_insert_id($conn);
+
+			$query = mysqli_query($conn, "SELECT orders FROM users WHERE user_id = '$id'");
+			if ($query) { 
+				$row = mysqli_fetch_assoc($query);
+				$order = $row['order'] . $last . ',';
+
+				$query = mysqli_query($conn, "UPDATE users SET orders = '$order' WHERE user_id = '$id'");
+			}
 			return  '<div class = "alert alert-success"> Success! </div>';
+		}
 		else return '<div class = "alert alert-danger"> Something went wrong! </div>';
 	}
 	else return $err;

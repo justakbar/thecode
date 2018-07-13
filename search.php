@@ -1,13 +1,14 @@
 <?php
   session_start();
-  include 'include/getQuestionsFunctions.php';
-  $dbc = mysqli_connect('localhost','algorithms','nexttome', 'algoritm');
-  if (!$dbc) {
+  $conn = mysqli_connect('localhost','algorithms','nexttome', 'algoritm');
+  if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
   }
+
+  include 'include/getQuestionsFunctions.php';
   if(isset($_GET['qu']))
     $qu = htmlentities($_GET['qu'], ENT_QUOTES);
-  $data = search($qu);
+  $data = search($qu,$conn);
 
   include 'head.php'; 
 ?>
@@ -16,38 +17,39 @@
     <div class="col-md-9">
       <div class = "main">
         <?php 
-          $pagination = array_pop($data);
-          foreach ($data as $key => $value) {
-        ?>
-            <div class = "row blockquote">
-              <div class = "col-md-8">
-                  <a href = "/question/<?php echo $value['id']; ?>" class = "questionlink"><?php echo $value['zagqu']; ?></a>
-                  <div class = "row">
-                      <div class = "col-md-5">
-                        <p> 
-                              <small>Asked <a class = "a" href = "/user/<?php echo $value['login']; ?>"><?php echo $value['login']; ?> </a><?php echo $value['dates']; ?></small>
-                            </p>
-                      </div>
-                      <div class = "col-md-7">
-                      <?php echo $value['tags']; ?>
-                      </div>
-                  </div>
-              </div>
+          if (!empty($data)) {
+            foreach ($data as $key => $value) {
+          ?>
+              <div class = "row blockquote">
+                <div class = "col-md-8">
+                    <a href = "/question/<?php echo $value['id']; ?>" class = "questionlink"><?php echo $value['zagqu']; ?></a>
+                    <div class = "row">
+                        <div class = "col-md-5">
+                          <p> 
+                                <small>Asked <a class = "a" href = "/user/<?php echo $value['login']; ?>"><?php echo $value['login']; ?> </a><?php echo $value['dates']; ?></small>
+                              </p>
+                        </div>
+                        <div class = "col-md-7">
+                        <?php echo $value['tags']; ?>
+                        </div>
+                    </div>
+                </div>
 
-              <div class = "col-md-2 border border-white">
-                <center><small><?php echo $value['views']; ?></small>
-                    <h6><small>просмотров</small></h6>
-                  </center>
-              </div>
+                <div class = "col-md-2 border border-white">
+                  <center><small><?php echo $value['views']; ?></small>
+                      <h6><small>просмотров</small></h6>
+                    </center>
+                </div>
 
-              <div class = "col-md-2 border border-white">
-                  <center><small><?php echo $value['answers']; ?></small>
-                    <h6><small>Ответов</small></h6>
-                  </center>
+                <div class = "col-md-2 border border-white">
+                    <center><small><?php echo $value['answers']; ?></small>
+                      <h6><small>Ответов</small></h6>
+                    </center>
+                </div>
               </div>
-            </div>
-          <?php
-            } echo $pagination;
+            <?php
+              } echo getPaginationSearch($_GET['page'], $_GET['qu'],$conn);
+            } else echo 'Ничего не найдено!';
         ?>
       </div>
     </div>

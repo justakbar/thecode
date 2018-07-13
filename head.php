@@ -57,6 +57,7 @@
     <head>
         <title>TheCode</title>
         <meta charset="utf-8">
+        <script src="/resource/js/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/resource/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/resource/css/style.css">
         <link rel="stylesheet" type="text/css" href="/resource/css/fontawesome.css">

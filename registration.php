@@ -1,36 +1,23 @@
 <?php
     session_start();
-    $dbc = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
-    include_once 'include/validation.function.php';
-    $err = array();
+    $conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+    include 'include/login.function.php';
+
     if(!isset($_COOKIE['hash']) || !isset($_COOKIE['cookie']) ||
                           $_COOKIE['hash'] != $_SESSION['hash'] || $_COOKIE['cookie'] != $_SESSION['code'])
     { 
-      if(isset($_POST['snd']))
+      if(isset($_POST['send']))
       {
         date_default_timezone_set('Europe/Moscow');
         $time = date("F j, Y, H:i");
-        $frst_name = mysqli_real_escape_string($dbc, Formchars($_POST['frst_name']));
-        $lst_name = mysqli_real_escape_string($dbc, Formchars($_POST['lst_name']));
-        $email = mysqli_real_escape_string($dbc, Formchars($_POST['email']));
-        $usrname = mysqli_real_escape_string($dbc, Formchars($_POST['usrname']));
-        $paswrd1= mysqli_real_escape_string($dbc, Formchars($_POST['paswrd1']));
-        $paswrd2 = mysqli_real_escape_string($dbc, Formchars($_POST['paswrd2']));
+        $first_name = htmlentities(trim($_POST['frst_name']),ENT_QUOTES);
+        $last_name = htmlentities(trim($_POST['lst_name']),ENT_QUOTES);
+        $email = htmlentities(trim($_POST['email']),ENT_QUOTES);
+        $username = htmlentities(trim($_POST['usrname']),ENT_QUOTES);
+        $password1= htmlentities(trim($_POST['paswrd1']),ENT_QUOTES);
+        $password2 = htmlentities(trim($_POST['paswrd2']),ENT_QUOTES);
         
-        $err = validation($frst_name,$lst_name,$usrname,$paswrd1,$paswrd2,$email);
-
-        if(count($err) == 0)
-        {
-          $pass = sha1(sha1($paswrd2));
-
-          $query = "INSERT INTO `users` (login, email, password, first_name, last_name, confirm, reg_time) VALUES ('$usrname','$email',  '$pass', '$frst_name', '$lst_name', '0', '$time')";
-
-          mysqli_query($dbc,$query);
-
-          mail($email, "Регистрация на сайт codeline.uz", "Ссылка для активации: http://codeline.uz/login/activate/". substr(sha1(sha1($email)), 0, -10));
-          $_SESSION['activate'] = $email;
-          header("Location: /login "); 
-        }
+        $err = registration($first_name,$last_name,$username,$password1,$password2,$email,$time,$conn);
       }
     }
     else header("Location: http://thecode.uz");
@@ -52,7 +39,7 @@
   		    		<p><input type="password" class="form-control loginplace" name = "paswrd1" placeholder="Пароль"></p>
   		    		<p><input type="password" class="form-control loginplace" name = "paswrd2" placeholder="Повторите пароль"></p>
   	    			<div class = "float-left">
-                <button type = "submit" class = "btn btn-success btn-sm" name = "snd">Регистрация</button>
+                <button type = "submit" class = "btn btn-success btn-sm" name = "send">Регистрация</button>
     	    			<a href = "/login" name="send" class = "btn btn-primary btn-sm">Вход</a>
               </div>
   		    	</form>

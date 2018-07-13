@@ -3,7 +3,7 @@
 		
 if($page == 'question' && is_numeric($module))
 {
-	$same = getSameQuestion($module);
+	$same = getSameQuestion($module,$conn);
 	echo '	
 		<label>
 	    	Похожие вопросы
@@ -24,13 +24,13 @@ if($page == 'question' && is_numeric($module))
 	}
 }
 	$array = getMetki();
-
 	echo '<label>
 			Метки
 		</label>';
 	$i = 0;
-	foreach ($array as $key => $value) {
-		if(++$i == 11) break;
+	if (!empty($array)) {
+		foreach ($array as $key => $value) {
+			if(++$i == 11) break;
 ?>
 	<div class = "row">
 		<div class = "col-md-12">
@@ -41,6 +41,7 @@ if($page == 'question' && is_numeric($module))
 		</div>
 	</div>
 <?php 
+	}
 }
 	?>
 </div>

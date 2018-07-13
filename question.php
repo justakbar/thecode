@@ -1,6 +1,18 @@
 <?php 
 session_start();
+$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+if (!$conn)
+	exit ("Something went wrong!");
+
 include 'include/getQuestionsFunctions.php';
+
+if ($_POST['send']) {
+	$text = htmlentities($_POST['answertext'],ENT_QUOTES);
+	$login = $_SESSION['username'];
+	$id = $_SESSION['id'];
+	$msg = answerToQuestion($text, $module, $login, $id,$conn);
+}
+
 include 'head.php';
 ?>
 <div class="container">
@@ -34,9 +46,10 @@ if (!isset($_COOKIE['hash']) || !isset($_COOKIE['cookie']) ||
 
 
 if($page == 'question' && !isset($module)) {
-	$data = getQuestion();
+	$data = getQuestion($conn);
 	echo '<h3>Вопросы</h3>';
-	foreach ($data as $key => $value) {
+	if (!empty($data)) {
+		foreach ($data as $key => $value) {
 ?>
 	<div class = "row blockquote">
 		<div class = "col-md-8">
@@ -48,7 +61,7 @@ if($page == 'question' && !isset($module)) {
 	                </p>
 		       	</div>
 		       	<div class = "col-md-7">
-		        <?php echo $value['tags']; ?>
+		        	<?php echo $value['tags']; ?>
 		       	</div>
 		    </div>
 		</div>
@@ -65,12 +78,14 @@ if($page == 'question' && !isset($module)) {
 		  	</center>
 		</div>
 	</div>
+	<hr/>
 <?php
+		}
+		echo getPagination($_GET['page'],$conn);
 	}
-	echo getPagination($_GET['page']);
 } else if ($page == 'question' && is_numeric($module)) {
 
-	$value = getData($module);
+	$value = getData($module,$conn);
 
 	if ($value != false) {
 		$exist = true;
@@ -101,15 +116,40 @@ if($page == 'question' && !isset($module)) {
 		</div>
 	</div>
 </div>
+<hr/>
 <div class = "row">
-	<div class = "col-12">
-
+	<div class = "col-md-12">
+		<h4>Answers</h4>
 	</div>
 </div>
+<?php 
+	$data = getAnswers ($module,$conn);
+	if ($data != false) {
+		foreach ($data as $key => $value) {
+?>
+	<div class = "row blockquote">
+		<div class = "col-md-2 border-right">
+			<span style = "font-size: 11pt;">Ответил(а)</span>
+			<small>
+				<a class = "questionlink" href = "/user/<?php echo $value['login']; ?>"><?php echo $value['login']; ?></a>
+			</small>
+			<br/>
+			<small> <?php echo $value['dates']; ?></small>
+		</div>
+		<div class = "col-md-10">
+			<?php echo $value['answer']; ?>
+		</div>
+	</div>
+	<hr/>
+<?php
+		}
+	}
+	echo $msg;
+?>
 <h3>Ответить</h3>
 <form action="/question/<?php echo $module; ?>" method="post">
     <section id="page-demo">
-        <textarea id="txt-content" name="questiontext" data-autosave="editor-content" required></textarea>
+        <textarea id="txt-content" name="answertext" data-autosave="editor-content" required></textarea>
     </section>
     <input type="submit" name="send" value="Отправить" class="btn btn-secondary margin">
 </form>

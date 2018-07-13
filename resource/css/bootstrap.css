@@ -141,7 +141,7 @@ strong {
 }
 
 small {
-  font-size: smaller;
+  font-size: 10pt;
 }
 
 sub,
@@ -429,7 +429,7 @@ hr {
 
 small,
 .small {
-  font-size: 80%;
+ /* font-size: 80%;*/
   font-weight: 400;
 }
 
@@ -531,8 +531,16 @@ kbd kbd {
 
 pre {
   display: block;
-  font-size: 87.5%;
-  color: #212529;
+  padding: 9.5px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.42857143;
+  /*color: #333;*/
+  word-break: break-all;
+  word-wrap: break-word;
+  background-color: #F9F2F4;
+  /*border: 1px solid #ccc;
+  border-radius: 4px;*/
 }
 
 pre code {

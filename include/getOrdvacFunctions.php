@@ -1,14 +1,4 @@
 <?php 
-if($_POST['send'])
-{	
-	$zagqu  = htmlentities(trim($_POST['zagqu']),ENT_QUOTES);
-	$cost   = htmlentities(trim($_POST['cost']),ENT_QUOTES);
-	$valyuta = htmlentities($_POST['valyuta'],ENT_QUOTES);
-	$text   = htmlentities(trim($_POST['noise']),ENT_QUOTES);
-	$domain = htmlentities($_POST['domain'],ENT_QUOTES);
-
-	$error = validateOrder($zagqu, $cost, $valyuta, $domain, $text);	
-}
 
 function getPublishedDate($since) {
 	$since = time() - $since;
@@ -35,14 +25,13 @@ function getPublishedDate($since) {
 	return $print;
 }
 
-//Views or just view
+//Views
 function viewed($view) {
 	return $view = ($view > 1) ? $view . ' views' : $view . ' view';
 }
 
 //Get Pagination
-function getPagination ($id) {
-	$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+function getPagination ($id, $conn) {
 
 	if(!isset($id))
 		$id = 1;
@@ -72,7 +61,7 @@ function getPagination ($id) {
 
 	while(++$left <= $right)
 	{
-		if($left - 1 != $id)
+		if($left != $id)
 			$pagination .= '<a href="/ordvac/?page=' . $left .  '"> ' . $left .  '</a>';
 		else $pagination .= '<a class = "actived" href="/ordvac/?page='. $left .  '"> ' . $left .  '</a>';
 	}
@@ -82,12 +71,12 @@ function getPagination ($id) {
 }
 
 // Get Data
-function getData() {
-	$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+function getData($conn) {
 	$data = array();
+	/*$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
 	if (!$conn) {
 		exit("Error");
-	}
+	}*/
 
 	if (isset($_GET['page']))
 		$id = ($_GET['page']-1) * 10;
@@ -105,18 +94,17 @@ function getData() {
 			);
 		}
 	}
-	mysqli_close($conn);
 	return $data;
 }
 
 
-function countViews ($viewed, $viewip, $views) {
+function countViews ($viewed, $viewip, $views, $conn) {
 
-	$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+	/*$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
 
 	if (!$conn) {
 		exit("Error");
-	}
+	}*/
 
 	$id = $_SESSION['id'];
 	$ip = $_SERVER['REMOTE_ADDR'];
@@ -139,18 +127,17 @@ function countViews ($viewed, $viewip, $views) {
 		$qu = mysqli_query($conn, "UPDATE `ordvac` SET `viewip` = '$ip', `views` = `views` + 1  WHERE `id` = '$module'");
 		$views++;
 	}
-	mysqli_close($conn);
 	return $views = ($views > 1) ? $views . ' views' : $views . ' view';
 }
 
 
-function getOrderData($module) {
+function getOrderData($module,$conn) {
 
-	$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
+	/*$conn = mysqli_connect('localhost', 'algorithms', 'nexttome', 'algoritm');
 
 	if (!$conn) {
 		exit("Error");
-	}
+	}*/
 
 	$query = mysqli_query($conn, "SELECT * FROM ordvac WHERE id = '$module'");
 	if ($query) {
@@ -163,10 +150,9 @@ function getOrderData($module) {
 			'login' => $row['login'],
 			'full_name' => $row['full_name'],
 			'cost' => $row['tsena'],
-			'viewed' => countViews($row['viewed'], $row['viewip'], $row['views']),
+			'viewed' => countViews($row['viewed'], $row['viewip'], $row['views'],$conn),
 			'published' => getPublishedDate($row['published'])
 		);
 	}
-	mysqli_close($conn);
 	return $data;
 }

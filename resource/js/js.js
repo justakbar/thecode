@@ -44,3 +44,57 @@
 });
 
 */
+jQuery(function($){
+
+	$('#invisibile, #visibile').click(function() {
+		var a = $(this).attr('name');
+		var length = a.length;
+		if (a == 'visibile_' + a[length-1]) {
+			id = a[length - 1];
+			type = '0';
+		} else if (a == 'invisibile_' + a[length-1]) {
+			id = a[length - 1];
+			type = '1';
+		}
+
+		$.ajax({
+			url: location.href,
+			type: 'post',
+			data: {'id':id, 'type': type},
+			success: function() {
+				if (a == 'visibile_' + a[length - 1]) {
+					$('#icon').removeClass('fas fa-eye-slash');
+					$('#icon').addClass('fas fa-eye');
+					$('#visibile').attr('name','invisibile_' + a[length-1]);
+					$('#visibile').attr('id','invisibile');
+				}
+				else if (a == 'invisibile_' + a[length-1]) {
+					$('#icon').removeClass('fas fa-eye');
+					$('#icon').addClass('fas fa-eye-slash');
+					$('#invisibile').attr('name','visibile_' + a[length-1]);
+					$('#invisibile').attr('id','visibile');
+				}
+			}
+		});
+	});
+
+	$('#delete').click(function() {
+		var a = $(this).attr('name');
+		var length = a.length;
+		if (a == 'delete_' + a[length-1]) {
+			id = a[length - 1];
+			query = 'delete';
+		}
+
+		$.ajax({
+			url: location.href,
+			type: 'post',
+			data: {'id' : id, 'query' : query},
+			success: function() {
+				$('#accordion_' + id).remove();
+			}
+		})
+
+
+	});
+});
